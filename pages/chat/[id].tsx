@@ -15,7 +15,7 @@ import axios from "axios";
 function SwipeableMain() {
   const [scrollTop, setScrollTop] = React.useState(0);
   const dispatch = useDispatch();
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = React.useRef(null);
   //@ts-ignore
   const { messages } = useSelector(({ messages }) => messages);
   const router = useRouter();
@@ -38,9 +38,14 @@ function SwipeableMain() {
       ref.current.scrollTo({ top: ref.current.scrollHeight });
       console.log("2342");
     }
-    console.log(ref.current);
+    console.log(ref);
   }, [messages]);
-
+  const refPassthrough = (el: any) => {
+    // call useSwipeables ref prop with el
+    handlers.ref(el);
+    // set the el to a ref you can access yourself
+    ref.current = el;
+  };
   const list = messages.map((el: Message) => (
     <MessageBlock
       key={el.id}
@@ -51,7 +56,7 @@ function SwipeableMain() {
     />
   ));
   return (
-    <main ref={ref} {...handlers}>
+    <main {...handlers} ref={refPassthrough}>
       <div className="messages">{list}</div>
     </main>
   );

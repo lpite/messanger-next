@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 function ChatBlock() {
   return (
     <Link href="/chat/1">
