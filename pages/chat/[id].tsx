@@ -11,6 +11,7 @@ import MessageBlock from "../../components/message";
 import NewMessage from "../../components/new-message";
 import Header from "../../components/header";
 import axios from "axios";
+import { API_URL } from "../../config";
 
 function SwipeableMain() {
   const [scrollTop, setScrollTop] = React.useState(0);
@@ -18,6 +19,8 @@ function SwipeableMain() {
   const ref = React.useRef(null);
   //@ts-ignore
   const { messages } = useSelector(({ messages }) => messages);
+  //@ts-ignore
+
   const router = useRouter();
   const handlers = useSwipeable({
     onSwipedRight: () => {
@@ -36,9 +39,7 @@ function SwipeableMain() {
   React.useEffect(() => {
     if (ref.current) {
       ref.current.scrollTo({ top: ref.current.scrollHeight });
-      console.log("2342");
     }
-    console.log(ref);
   }, [messages]);
   const refPassthrough = (el: any) => {
     // call useSwipeables ref prop with el
@@ -55,6 +56,7 @@ function SwipeableMain() {
       id={el.id}
     />
   ));
+
   return (
     <main {...handlers} ref={refPassthrough}>
       <div className="messages">{list}</div>
@@ -64,6 +66,8 @@ function SwipeableMain() {
 
 const Home: NextPage = () => {
   const [top, settop] = React.useState(5);
+  const router = useRouter();
+
   function onFocusInput() {
     if (navigator.userAgent.includes("iPhone")) {
       if (Number(localStorage.getItem("height"))) {
@@ -77,7 +81,13 @@ const Home: NextPage = () => {
       localStorage.setItem("height", window.innerHeight.toString());
     }
   }
-
+  //@ts-ignore
+  const { name } = useSelector(({ user }) => user);
+  React.useEffect(() => {
+    if (!name) {
+      router.push("/login/");
+    }
+  }, [name]);
   return (
     <div className="container">
       <Head>

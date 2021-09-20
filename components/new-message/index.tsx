@@ -7,6 +7,7 @@ let id = "";
 if (typeof window !== "undefined") {
   id = localStorage.getItem("id");
 }
+import { API_URL } from "../../config";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
   const input = React.useRef<HTMLInputElement>(null);
@@ -23,7 +24,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
         id: "",
       };
       axios
-        .post("http://46.63.31.3:3002/api/message/new", message)
+        .post(`${API_URL}api/message/new`, message)
         .then(({ data }) => {})
         .catch(() => {});
     }

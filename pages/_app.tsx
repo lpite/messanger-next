@@ -11,10 +11,15 @@ import { useDispatch } from "react-redux";
 
 function SocketIo() {
   const dispatch = useDispatch();
-
+  async function requestPermission() {
+    try {
+      let permission = await Notification.requestPermission();
+    } catch (error) {}
+  }
   React.useEffect(() => {
     socket.on("new-message", (message: Message) => {
       dispatch({ type: "message", payload: message });
+      requestPermission();
     });
   }, [socket]);
   return null;

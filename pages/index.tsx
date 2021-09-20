@@ -1,8 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import ChatBlock from "../components/chat-block";
+import router from "next/router";
+import { useSelector } from "react-redux";
 
 function Main() {
+  const { name } = useSelector(({ user }: any) => user);
+  React.useEffect(() => {
+    if (!name) {
+      router.push("/login/");
+    }
+  }, [name]);
   return (
     <div className="container">
       <header className="header black-container">

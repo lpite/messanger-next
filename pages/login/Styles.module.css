@@ -16,6 +16,7 @@
   justify-content: flex-start;
   flex-direction: column;
   box-shadow: 0px 2px 15px #645151;
+  position: relative;
 }
 .form_text {
   color: #b18d8d;
@@ -55,4 +56,20 @@
   height: 19px;
   font-size: 14px;
   color: rgb(228, 60, 60);
+}
+.form_loading {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  transform: translateY(-25px);
+  border-radius: 50%;
+  border: 2px solid blue;
+}
+.form_loading_div {
+  position: fixed;
+  height: 170px;
+  width: 320px;
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.726);
 }

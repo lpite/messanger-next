@@ -3,9 +3,12 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 import authReducer from "./messagesReducer";
+import userReducer from "./reducers/user";
 import { combineReducers } from "redux";
+
 const reducers = {
   messages: authReducer,
+  user: userReducer,
 };
 let store;
 
