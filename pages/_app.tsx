@@ -12,9 +12,13 @@ import { useDispatch } from "react-redux";
 function SocketIo() {
   const dispatch = useDispatch();
   async function requestPermission(author: string, text: string) {
+    let id = "";
+    if (typeof window !== "undefined") {
+      id = localStorage.getItem("id");
+    }
     try {
       let permission = await Notification.requestPermission();
-      if (permission === "granted") {
+      if (permission === "granted" && author !== id) {
         new Notification(author, {
           body: text,
         });
