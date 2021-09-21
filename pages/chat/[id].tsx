@@ -11,10 +11,8 @@ import MessageBlock from "../../components/message";
 import NewMessage from "../../components/new-message";
 import Header from "../../components/header";
 import axios from "axios";
-import { API_URL } from "../../config";
 
 function SwipeableMain() {
-  const [scrollTop, setScrollTop] = React.useState(0);
   const dispatch = useDispatch();
   const ref = React.useRef(null);
   //@ts-ignore
