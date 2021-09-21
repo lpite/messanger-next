@@ -15,8 +15,8 @@ function SocketIo() {
     try {
       let permission = await Notification.requestPermission();
       if (permission === "granted") {
-        new Notification("new", {
-          body: "",
+        new Notification(author, {
+          body: text,
         });
       }
     } catch (error) {}
