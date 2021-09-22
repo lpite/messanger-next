@@ -31,7 +31,8 @@ function Main() {
           </a>
         </Link>
         <span className="header-text">Chats</span>
-        <img src="" alt="" className="header-image" />
+        <div className="header-image"></div>
+        {/* <img src="" alt="" className="header-image" /> */}
       </header>
       <main className="main-page">
         <ChatBlock />

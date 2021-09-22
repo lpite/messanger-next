@@ -8,6 +8,8 @@ import { socket } from "../socket";
 import { Message } from "../types/message";
 
 import { useDispatch } from "react-redux";
+import Head from "next/head";
+import router from "next/router";
 
 function SocketIo() {
   const dispatch = useDispatch();
@@ -40,6 +42,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        <title>Messanger</title>
+        <meta name="description" content="Messanger" />
+        <link rel="icon" href="/cat.jpg" />
+      </Head>
       <Provider store={store}>
         <SocketIo />
         <Component {...pageProps} />

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import styles from "./Styles.module.css";
 
 function Header({ top }) {
   return (
@@ -20,8 +21,16 @@ function Header({ top }) {
           </svg>
         </a>
       </Link>
-      <span className="header-text">Name</span>
-      <img src="" alt="" className="header-image" />
+      <Link href="/profile/1">
+        <a>
+          <span className="header-text">Name</span>
+        </a>
+      </Link>
+      <Link href="/profile/1">
+        <a className="header-image">
+          <img src="/cat.jpg" alt="" className="header-image" />
+        </a>
+      </Link>
     </header>
   );
 }
