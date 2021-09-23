@@ -1,5 +1,6 @@
 export type Message = {
-  author: string;
+  author_id: number;
+  author_name: string;
   text: string;
   time: string;
   id: string;

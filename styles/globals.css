@@ -68,16 +68,16 @@ button {
   justify-content: space-between;
   flex-direction: row;
   position: fixed;
-  top: 5px;
   align-self: center;
   z-index: 9;
 }
 .header-button {
   border: none;
   background: none;
-  margin-left: 10px;
+  margin: 0 0 0 10px;
   justify-self: flex-start;
   padding: 0;
+  border: none;
 }
 .header-button:empty {
   width: 27px;
@@ -142,38 +142,12 @@ button {
   flex-direction: column;
   max-height: 100%;
 }
-.message {
-  max-width: 250px;
-  min-width: 70px;
-  height: auto;
-  /* min-height: 50px; */
-  background: #231b1b;
-  margin: 10px 8px 0;
-  align-self: flex-start;
-  border-radius: 15px;
-  padding: 10px;
-  word-wrap: break-word;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
-}
-.message-text {
-  flex: 1;
-}
-.message-date {
-  align-self: flex-end;
-  font-size: 13px;
-  color: #b18d8d;
-}
-.message-me {
-  align-self: flex-end;
-  background: rgb(119, 78, 119);
-  box-shadow: 0 0 10px rgb(119, 78, 119);
-}
 .chat-link {
   width: 100%;
   text-decoration: none;
+}
+.chat-link:focus .chat-block {
+  background: var(--grey);
 }
 .chat-block {
   width: 100%;
@@ -184,6 +158,7 @@ button {
   grid-template-rows: 50% 50%;
   color: #b18d8d;
 }
+
 .chat-block-image {
   width: 46px;
   height: 46px;

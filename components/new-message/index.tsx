@@ -3,22 +3,29 @@ import React from "react";
 import { Message } from "../../types/message";
 import axios from "axios";
 
-let id = "";
+let id = 0;
 if (typeof window !== "undefined") {
-  id = localStorage.getItem("id");
+  id = parseInt(localStorage.getItem("id"));
+  if (id === 0) {
+    localStorage.removeItem("id");
+  }
 }
 import { API_URL } from "../../config";
+import { useSelector } from "react-redux";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
   const input = React.useRef<HTMLInputElement>(null);
   const [text, setText] = React.useState("");
+  //@ts-ignore
+  const { name } = useSelector(({ user }) => user);
 
-  function sendMessage(e: React.MouseEvent<HTMLButtonElement>) {
+  function sendMessage() {
     if (text.trim()) {
       input.current?.focus();
       setText("");
       const message: Message = {
-        author: id,
+        author_id: id,
+        author_name: name,
         time: new Date().toString(),
         text: input.current.value,
         id: "",
@@ -32,6 +39,19 @@ function NewMessage({ onFocusInput, onBlurInput }) {
   function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     setText(e.target.value);
   }
+  function onFocusInputCombine() {
+    onFocusInput();
+    window.onkeydown = (e: { keyCode: any }) => {
+      if (e.keyCode === 13) {
+        sendMessage();
+      }
+    };
+  }
+  function onKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  }
   return (
     <div className="black-container new-message">
       <input
@@ -39,6 +59,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         onChange={onChangeInput}
+        onKeyDown={onKeyDown}
         value={text}
         ref={input}
         placeholder="message..."

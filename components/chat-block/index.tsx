@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 function ChatBlock() {
   return (
-    <Link href="/chat/1">
+    <Link href="/chat/1" scroll={false}>
       <a className="chat-link">
         <div className="chat-block">
           <img src="/cat.jpg" alt="" className="chat-block-image" />

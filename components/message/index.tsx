@@ -1,16 +1,22 @@
 import React from "react";
 import { Message } from "../../types/message";
-import { useInView } from "react-intersection-observer";
-function MessageBlock({ author, id, text, time }: Message) {
-  let at = "";
+import styles from "./Styles.module.scss";
+
+function MessageBlock({ author_id, author_name, id, text, time }: Message) {
+  let at = 0;
   if (typeof window !== "undefined") {
-    at = localStorage.getItem("id");
+    at = parseInt(localStorage.getItem("id"));
   }
 
   return (
-    <div className={`message ${author === at ? "message-me" : ""}`}>
-      <span className="message-text">{text}</span>
-      <span className="message-date">{time}</span>
+    <div
+      className={author_id === at ? styles.message_me : styles.message_others}
+    >
+      <span className={styles.message_text}>{text}</span>
+      <span className={styles.message_date}>
+        {time}
+        <span className={styles.message_status}>?</span>
+      </span>
     </div>
   );
 }

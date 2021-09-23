@@ -17,7 +17,6 @@ function SwipeableMain() {
   const ref = React.useRef(null);
   //@ts-ignore
   const { messages } = useSelector(({ messages }) => messages);
-  //@ts-ignore
 
   const router = useRouter();
   const handlers = useSwipeable({
@@ -39,6 +38,7 @@ function SwipeableMain() {
       ref.current.scrollTo({ top: ref.current.scrollHeight });
     }
   }, [messages]);
+
   const refPassthrough = (el: any) => {
     // call useSwipeables ref prop with el
     handlers.ref(el);
@@ -48,7 +48,8 @@ function SwipeableMain() {
   const list = messages.map((el: Message) => (
     <MessageBlock
       key={el.id}
-      author={el.author}
+      author_name={el.author_name}
+      author_id={el.author_id}
       text={el.text}
       time={el.time}
       id={el.id}
@@ -63,10 +64,9 @@ function SwipeableMain() {
 }
 
 const Home: NextPage = () => {
-  const [top, settop] = React.useState(5);
-  const router = useRouter();
+  const [top, settop] = React.useState(3);
 
-  function onFocusInput() {
+  function onFocusInput(e: React.FocusEvent<HTMLInputElement>) {
     if (navigator.userAgent.includes("iPhone")) {
       if (Number(localStorage.getItem("height"))) {
         settop(window.innerHeight - Number(localStorage.getItem("height")) + 5);
@@ -75,17 +75,11 @@ const Home: NextPage = () => {
   }
   function onBlurInput() {
     if (navigator.userAgent.includes("iPhone")) {
-      settop(5);
+      settop(3);
       localStorage.setItem("height", window.innerHeight.toString());
     }
   }
-  //@ts-ignore
-  const { name } = useSelector(({ user }) => user);
-  React.useEffect(() => {
-    if (!name) {
-      router.push("/login/");
-    }
-  }, [name]);
+
   return (
     <div className="container">
       <Header top={top} />

@@ -7,21 +7,26 @@ import React from "react";
 import { socket } from "../socket";
 import { Message } from "../types/message";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import router from "next/router";
 
 function SocketIo() {
   const dispatch = useDispatch();
-  async function requestPermission(author: string, text: string) {
-    let id = "";
+  async function requestPermission(
+    author_name: string,
+    text: string,
+    author_id: number
+  ) {
+    let id = 0;
     if (typeof window !== "undefined") {
-      id = localStorage.getItem("id");
+      id = parseInt(localStorage.getItem("id"));
     }
+
     try {
       let permission = await Notification.requestPermission();
-      if (permission === "granted" && author !== id) {
-        new Notification(author, {
+      if (permission === "granted" && author_id !== id) {
+        new Notification(author_name, {
           body: text,
         });
       }
@@ -30,10 +35,17 @@ function SocketIo() {
   React.useEffect(() => {
     socket.on("new-message", (message: Message) => {
       dispatch({ type: "message", payload: message });
-      requestPermission(message.author, message.text);
+      requestPermission(message.author_name, message.text, message.author_id);
     });
     socket.on("new-user", (user) => {});
   }, [socket]);
+  //@ts-ignore
+  const { name } = useSelector(({ user }) => user);
+  React.useEffect(() => {
+    if (!name) {
+      router.push("/login/");
+    }
+  }, [name]);
   return null;
 }
 
@@ -56,7 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 if (typeof window !== "undefined") {
   if (!localStorage.getItem("id")) {
-    localStorage.setItem("id", Math.random().toString());
+    localStorage.setItem("id", (Math.random() * 10000000).toFixed());
   }
 }
 export default MyApp;
