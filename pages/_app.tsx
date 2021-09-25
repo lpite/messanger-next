@@ -38,12 +38,11 @@ function SocketIo() {
       if (message.author_id !== id) {
         dispatch(addMessage(message));
       }
-      // console.log(message);
 
       requestPermission(message.author_name, message.text, message.author_id);
     });
     socket.on("new-user", (user) => {});
-  }, [socket.id]);
+  }, [socket]);
 
   //@ts-ignore
   const { name } = useSelector(({ user }) => user);
