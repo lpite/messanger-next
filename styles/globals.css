@@ -106,7 +106,7 @@ button {
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  height: 54px;
+  height: 44px;
   margin: 2px 0;
   flex-shrink: 0;
 }
