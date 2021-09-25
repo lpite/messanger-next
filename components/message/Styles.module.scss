@@ -1,6 +1,6 @@
 %message {
   max-width: 250px;
-  min-width: 70px;
+  min-width: 100px;
   height: auto;
   /* min-height: 50px; */
   margin: 10px 8px 0;
@@ -12,15 +12,28 @@
   display: flex;
   flex-direction: column;
   z-index: 2;
+  transition: all 0.2s ease-in-out;
 }
 .message_text {
   flex: 1;
 }
-.message_date {
+.message_bottom {
   align-self: flex-end;
   font-size: 13px;
   color: #b18d8d;
+  display: flex;
+  transition: all 0.2s ease-in-out;
 }
+.message_date {
+  max-width: 150px;
+}
+.message_status {
+  margin-left: 5px;
+  align-self: flex-end;
+  text-align: end;
+  width: 55px;
+}
+
 .message_others {
   @extend %message;
   background: #231b1b;
@@ -30,8 +43,4 @@
   align-self: flex-end;
   background: rgb(119, 78, 119);
   box-shadow: 0 0 10px rgb(119, 78, 119);
-}
-
-.message_status {
-  display: flex;
 }

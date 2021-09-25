@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
-import authReducer from "./messagesReducer";
+import messagesReducer from "./reducers/messages";
 import userReducer from "./reducers/user";
 import { combineReducers } from "redux";
 
 const reducers = {
-  messages: authReducer,
+  messages: messagesReducer,
   user: userReducer,
 };
 let store;

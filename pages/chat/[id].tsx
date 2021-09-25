@@ -38,7 +38,10 @@ function SwipeableMain() {
       ref.current.scrollTo({ top: ref.current.scrollHeight });
     }
   }, [messages]);
-
+  React.useEffect(() => {
+    console.log(ref.current.scrollHeight);
+    ref.current.scrollTo({ top: ref.current.scrollHeight });
+  }, [ref.current?.scrollHeight]);
   const refPassthrough = (el: any) => {
     // call useSwipeables ref prop with el
     handlers.ref(el);
@@ -47,12 +50,13 @@ function SwipeableMain() {
   };
   const list = messages.map((el: Message) => (
     <MessageBlock
-      key={el.id}
+      key={!el.id ? el.local_id : el.id}
       author_name={el.author_name}
       author_id={el.author_id}
       text={el.text}
       time={el.time}
       id={el.id}
+      status={el.status}
     />
   ));
 

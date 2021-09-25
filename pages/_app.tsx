@@ -10,19 +10,19 @@ import { Message } from "../types/message";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import router from "next/router";
+import { addMessage } from "../redux/actions/messages";
 
 function SocketIo() {
+  let id = 0;
+  if (typeof window !== "undefined") {
+    id = parseInt(localStorage.getItem("id"));
+  }
   const dispatch = useDispatch();
   async function requestPermission(
     author_name: string,
     text: string,
     author_id: number
   ) {
-    let id = 0;
-    if (typeof window !== "undefined") {
-      id = parseInt(localStorage.getItem("id"));
-    }
-
     try {
       let permission = await Notification.requestPermission();
       if (permission === "granted" && author_id !== id) {
@@ -32,13 +32,19 @@ function SocketIo() {
       }
     } catch (error) {}
   }
+  //@ts-ignore
   React.useEffect(() => {
     socket.on("new-message", (message: Message) => {
-      dispatch({ type: "message", payload: message });
+      if (message.author_id !== id) {
+        dispatch(addMessage(message));
+      }
+      // console.log(message);
+
       requestPermission(message.author_name, message.text, message.author_id);
     });
     socket.on("new-user", (user) => {});
-  }, [socket]);
+  }, [socket.id]);
+
   //@ts-ignore
   const { name } = useSelector(({ user }) => user);
   React.useEffect(() => {

@@ -11,42 +11,50 @@ if (typeof window !== "undefined") {
   }
 }
 import { API_URL } from "../../config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "../../redux/actions/messages";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
   const input = React.useRef<HTMLInputElement>(null);
   const [text, setText] = React.useState("");
   //@ts-ignore
   const { name } = useSelector(({ user }) => user);
-
+  //@ts-ignore
+  const { messages } = useSelector(({ messages }) => messages);
+  const dispatch = useDispatch();
+  const localId = (Math.random() * 10000).toFixed();
   function sendMessage() {
     if (text.trim()) {
       input.current?.focus();
       setText("");
-      const message: Message = {
-        author_id: id,
-        author_name: name,
-        time: new Date().toString(),
-        text: input.current.value,
-        id: "",
-      };
+      dispatch(
+        addMessage({
+          author_id: id,
+          author_name: name,
+          text: input.current.value,
+          local_id: localId,
+          status: 0,
+          time: new Date().toString().slice(0, 24),
+        })
+      );
+
       axios
-        .post(`${API_URL}api/message/new`, message)
-        .then(({ data }) => {})
+        .post(`${API_URL}api/message/new`, {
+          author_id: id,
+          author_name: name,
+          text: input.current.value,
+          local_id: localId,
+        })
+        .then(({ data }) => {
+          dispatch({ type: "UPDATE_MESSAGE", payload: data });
+        })
         .catch(() => {});
     }
   }
   function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     setText(e.target.value);
   }
-  function onFocusInputCombine() {
-    onFocusInput();
-    window.onkeydown = (e: { keyCode: any }) => {
-      if (e.keyCode === 13) {
-        sendMessage();
-      }
-    };
-  }
+
   function onKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       sendMessage();

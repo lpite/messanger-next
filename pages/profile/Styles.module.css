@@ -30,12 +30,13 @@
 }
 .top_name {
   font-size: 18px;
+  color: rgb(180, 175, 175);
 }
 .top_image_with_link {
   display: grid;
   width: 100%;
   grid-template-columns: calc(50% - 50px) 1fr;
-  grid-template-rows: 38px 1fr;
+  grid-template-rows: 32px 1fr;
 }
 
 .info_block {
