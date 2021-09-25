@@ -108,6 +108,7 @@ button {
   flex-direction: row;
   height: 54px;
   margin: 2px 0;
+  flex-shrink: 0;
 }
 .new-message input {
   font-size: 20px;
