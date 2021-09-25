@@ -7,10 +7,6 @@ const initialState = {
 export default function messages(state = initialState, action) {
   switch (action.type) {
     case newMessage: {
-      let message = state.messages.find(
-        (el) => el.local_id == action.payload.local_id
-      );
-
       return {
         ...state,
         messages: [...state.messages, action.payload],
