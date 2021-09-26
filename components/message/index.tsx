@@ -19,11 +19,21 @@ function MessageBlock({
     { text: "sent", color: "" },
     { text: "seen", color: "white" },
   ];
+  function findUrl(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function (url) {
+      return <a href={url}>url</a>;
+    });
+  }
+  console.log(findUrl(text));
+
   return (
     <div
       className={author_id === at ? styles.message_me : styles.message_others}
     >
-      <span className={styles.message_text}>{text}</span>
+      {/* <span className={styles.message_text}> */}
+      <pre className={styles.message_pre}>{text}</pre>
+      {/* </span> */}
       <div className={styles.message_bottom}>
         <span className={styles.message_date}>{time}</span>
         <span

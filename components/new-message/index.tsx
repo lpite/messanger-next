@@ -15,18 +15,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../redux/actions/messages";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
-  const input = React.useRef<HTMLInputElement>(null);
+  const input = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
   //@ts-ignore
   const { name } = useSelector(({ user }) => user);
   //@ts-ignore
-  const { messages } = useSelector(({ messages }) => messages);
   const dispatch = useDispatch();
   const localId = (Math.random() * 10000).toFixed();
   function sendMessage() {
     if (text.trim()) {
       input.current?.focus();
+      setHeight("22px");
       setText("");
+      // input.current.setSelectionRange(0, 0);
+
       dispatch(
         addMessage({
           author_id: id,
@@ -37,6 +39,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
           time: new Date().toString().slice(0, 24),
         })
       );
+      input.current.setSelectionRange(0, 0);
 
       axios
         .post(`${API_URL}api/message/new`, {
@@ -51,19 +54,41 @@ function NewMessage({ onFocusInput, onBlurInput }) {
         .catch(() => {});
     }
   }
-  function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
+  const [height, setHeight] = React.useState("22px");
+  function onChangeInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    if (input.current.scrollHeight < 132 && input.current.scrollHeight > 30) {
+      setHeight(Math.ceil(input.current.scrollHeight / 22) * 14 + "px");
+    }
+    if (!e.target.value) {
+      setHeight("22px");
+    }
+    if (input.current.selectionStart <= 28) {
+      // setHeight("22px");
+    }
+    console.log(
+      input.current.selectionStart,
+      input.current.selectionEnd,
+      e.target.value.trim()
+    );
+    if (e.target.value.toString().match(/\r\n/)) {
+      console.log("------------------------");
+    }
     setText(e.target.value);
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter") {
-      sendMessage();
+    if (!navigator.userAgent.toLowerCase().includes("mobile")) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        sendMessage();
+        e.preventDefault();
+        input.current.setSelectionRange(0, 0);
+      }
     }
   }
   return (
     <div className="black-container new-message">
-      <input
-        type="text"
+      <textarea
+        // type="text"
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         onChange={onChangeInput}
@@ -71,6 +96,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
         value={text}
         ref={input}
         placeholder="message..."
+        style={{ height: height }}
       />
       <button onClick={sendMessage}>
         <svg
