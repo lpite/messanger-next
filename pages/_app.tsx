@@ -28,12 +28,22 @@ function SocketIo() {
   ) {
     try {
       let permission = await Notification.requestPermission();
+
       if (permission === "granted" && author_id !== id) {
-        new Notification(author_name, {
-          body: text,
-        });
+        if (document.visibilityState !== "visible") {
+          const notification = new Notification(author_name, {
+            body: text,
+          });
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+              notification.close();
+            }
+          });
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
   // @ts-ignore
   React.useEffect(() => {
@@ -65,7 +75,6 @@ function SocketIo() {
     }
     if (typeof window !== "undefined") {
       window.onblur = () => {
-        console.log("blur");
         axios
           .post(`${API_URL}api/user/change/status`, {
             id: id,
@@ -80,7 +89,6 @@ function SocketIo() {
             isOnline: true,
           })
           .catch(() => {});
-        console.log("focus");
       };
     }
   }, [name]);
