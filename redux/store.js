@@ -4,11 +4,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 import messagesReducer from "./reducers/messages";
 import userReducer from "./reducers/user";
+import usersReducer from "./reducers/users";
 import { combineReducers } from "redux";
 
 const reducers = {
   messages: messagesReducer,
   user: userReducer,
+  users:usersReducer
 };
 let store;
 

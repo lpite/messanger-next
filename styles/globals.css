@@ -164,46 +164,7 @@ button {
   flex-direction: column;
   max-height: 100%;
 }
-.chat-link {
-  width: 100%;
-  text-decoration: none;
-}
-.chat-link:focus .chat-block {
-  background: var(--grey);
-}
-.chat-block {
-  width: 100%;
-  height: 56px;
-  background: #231b1b;
-  display: grid;
-  grid-template-columns: 50px 1fr 50px;
-  grid-template-rows: 50% 50%;
-  color: #b18d8d;
-}
 
-.chat-block-image {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: #413737;
-  margin-left: 5px;
-  grid-row: 1/-1;
-  align-self: center;
-}
-.chat-block-name {
-  align-self: flex-start;
-  margin-left: 5px;
-  font-size: 18px;
-}
-.chat-block-text {
-  margin-left: 5px;
-  font-size: 14px;
-}
-.chat-block-time {
-  text-align: end;
-  margin-right: 5px;
-  font-size: 12px;
-}
 .test {
   position: fixed;
   width: 100%;

@@ -55,23 +55,17 @@ function NewMessage({ onFocusInput, onBlurInput }) {
     }
   }
   const [height, setHeight] = React.useState("22px");
+  const [body, setBody]  = React.useState("22px");
+
   function onChangeInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if (input.current.scrollHeight < 132 && input.current.scrollHeight > 30) {
-      setHeight(Math.ceil(input.current.scrollHeight / 22) * 14 + "px");
+      setHeight(Math.ceil(input.current.scrollHeight / 22) * 16 + "px");
     }
     if (!e.target.value) {
       setHeight("22px");
     }
     if (input.current.selectionStart <= 28) {
       // setHeight("22px");
-    }
-    console.log(
-      input.current.selectionStart,
-      input.current.selectionEnd,
-      e.target.value.trim()
-    );
-    if (e.target.value.toString().match(/\r\n/)) {
-      console.log("------------------------");
     }
     setText(e.target.value);
   }

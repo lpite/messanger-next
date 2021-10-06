@@ -11,6 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import router from "next/router";
 import { addMessage } from "../redux/actions/messages";
+import { addUser, removeUser, setUsers } from "../redux/actions/users";
+import axios from "axios";
+import { API_URL } from "../config";
 
 function SocketIo() {
   let id = 0;
@@ -32,7 +35,7 @@ function SocketIo() {
       }
     } catch (error) {}
   }
-  //@ts-ignore
+  // @ts-ignore
   React.useEffect(() => {
     socket.on("new-message", (message: Message) => {
       if (message.author_id !== id) {
@@ -41,14 +44,44 @@ function SocketIo() {
 
       requestPermission(message.author_name, message.text, message.author_id);
     });
-    socket.on("new-user", (user) => {});
+    socket.on("newUser", (user) => {
+      dispatch(addUser(user));
+    });
+
+    socket.on("disconnectUser", (user) => {
+      dispatch(removeUser(user));
+    });
   }, [socket]);
 
-  //@ts-ignore
-  const { name } = useSelector(({ user }) => user);
+  const { name } = useSelector(({ user }: any) => user);
   React.useEffect(() => {
     if (!name) {
       router.push("/login/");
+    } else {
+      axios.post(`${API_URL}api/users/get`).then(({ data }) => {
+        console.log(data);
+        dispatch(setUsers(data));
+      });
+    }
+    if (typeof window !== "undefined") {
+      window.onblur = () => {
+        console.log("blur");
+        axios
+          .post(`${API_URL}api/user/change/status`, {
+            id: id,
+            isOnline: false,
+          })
+          .catch(() => {});
+      };
+      window.onfocus = () => {
+        axios
+          .post(`${API_URL}api/user/change/status`, {
+            id: id,
+            isOnline: true,
+          })
+          .catch(() => {});
+        console.log("focus");
+      };
     }
   }, [name]);
   return null;

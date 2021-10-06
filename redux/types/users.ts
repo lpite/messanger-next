@@ -1,4 +1,4 @@
-export const addUsers = "SET_USERS";
+export const SET_USERS = "SET_USERS";
 // название придумать для этого
-export const addUser = "ADD_USER";
-export const removeUser = "REMOVE_USER";
+export const ADD_USER = "ADD_USER";
+export const REMOVE_USER = "REMOVE_USER";
