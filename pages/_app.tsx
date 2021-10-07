@@ -30,16 +30,14 @@ function SocketIo() {
       let permission = await Notification.requestPermission();
 
       if (permission === "granted" && author_id !== id) {
-        if (document.visibilityState !== "visible") {
-          const notification = new Notification(author_name, {
-            body: text,
-          });
-          document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "visible") {
-              notification.close();
-            }
-          });
-        }
+        const notification = new Notification(author_name, {
+          body: text,
+        });
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") {
+            notification.close();
+          }
+        });
       }
     } catch (error) {
       console.log(error);
@@ -83,6 +81,10 @@ function SocketIo() {
           .catch(() => {});
       };
       window.onfocus = () => {
+        axios.post(`${API_URL}api/users/get`).then(({ data }) => {
+          console.log(data);
+          dispatch(setUsers(data));
+        });
         axios
           .post(`${API_URL}api/user/change/status`, {
             id: id,

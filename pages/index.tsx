@@ -17,20 +17,18 @@ function Main() {
     <div className="container">
       <header className="header black-container">
         <Link href="/">
-          <a className="header-button">
-       
-          </a>
+          <a className="header-button"></a>
         </Link>
         <span className="header-text">Chats</span>
         <div className="header-image"></div>
         {/* <img src="" alt="" className="header-image" /> */}
       </header>
       <main className="main-page">
-        {users.map((el:{id:string,socketId:string,online:boolean})=>(
-        <ChatBlock chatId={el.id} online={el.online}  key={el.socketId}/>
-
-        ))}
-
+        {users.map(
+          (el: { id: string; socketId: string; isOnline: boolean }) => (
+            <ChatBlock chatId={el.id} online={el.isOnline} key={el.socketId} />
+          )
+        )}
       </main>
     </div>
   );

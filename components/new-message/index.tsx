@@ -55,7 +55,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
     }
   }
   const [height, setHeight] = React.useState("22px");
-  const [body, setBody]  = React.useState("22px");
+  const [body, setBody] = React.useState("22px");
 
   function onChangeInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
     if (input.current.scrollHeight < 132 && input.current.scrollHeight > 30) {

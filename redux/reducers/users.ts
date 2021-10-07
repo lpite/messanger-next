@@ -1,7 +1,7 @@
 import produce from "immer";
 import { SET_USERS, ADD_USER, REMOVE_USER } from "../types/users";
 type State = {
-  users: Array<{ id: string; socketId: string; online: boolean }>;
+  users: Array<{ id: string; socketId: string; isOnline: boolean }>;
 };
 const initialState: State = {
   users: [],
@@ -26,7 +26,7 @@ export default function usersReducer(state = initialState, action) {
           draft[draft.indexOf(user)] = {
             id: user.id,
             socketId: user.socketId,
-            online: true,
+            isOnline: true,
           };
         }
       });
@@ -42,7 +42,7 @@ export default function usersReducer(state = initialState, action) {
           draft[draft.indexOf(user)] = {
             id: user.id,
             socketId: user.socketId,
-            online: false,
+            isOnline: false,
           };
         }
       });
