@@ -19,10 +19,10 @@ function SwipeableMain() {
           <button className="header-button" onClick={() => router.back()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="27"
-              height="24"
+              width="33"
+              height="30"
               fill="currentColor"
-              viewBox="0 0 16 14"
+              viewBox="0 0 16 16"
             >
               <path
                 fillRule="evenodd"
