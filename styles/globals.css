@@ -80,6 +80,9 @@ button {
   justify-self: flex-start;
   padding: 0;
   border: none;
+  height: 27px;
+  width: 28px;
+  align-self: center;
 }
 .header-button:empty {
   width: 27px;
@@ -87,8 +90,6 @@ button {
 }
 .header-button svg {
   fill: #b18d8d;
-  width: 100%;
-  height: 100%;
 }
 .header-text {
   color: #b18d8d;
