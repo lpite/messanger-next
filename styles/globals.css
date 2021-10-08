@@ -9,6 +9,7 @@ body {
 }
 #__next {
   height: 100%;
+ overflow: hidden;
 }
 :root {
   --black: #231b1b;
