@@ -61,7 +61,7 @@ function SwipeableMain() {
   ));
 
   return (
-    <main {...handlers} ref={refPassthrough}>
+    <main {...handlers} ref={refPassthrough} className="messages-page">
       <div className="messages">{list}</div>
     </main>
   );
