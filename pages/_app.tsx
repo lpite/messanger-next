@@ -13,7 +13,7 @@ import router from "next/router";
 import { addMessage } from "../redux/actions/messages";
 import { addUser, removeUser, setUsers } from "../redux/actions/users";
 import axios from "axios";
-import { API_URL } from "../config";
+import { API_URL, appVersion } from "../config";
 
 function SocketIo() {
   let id = 0;
@@ -121,5 +121,12 @@ if (typeof window !== "undefined") {
   if (!localStorage.getItem("id")) {
     localStorage.setItem("id", (Math.random() * 10000000).toFixed());
   }
+  axios.post(`${API_URL}api/check/app/version`).then(({ data }) => {
+    if (data !== appVersion) {
+      if (confirm("Update?")) {
+        window.location.reload();
+      }
+    }
+  });
 }
 export default MyApp;
