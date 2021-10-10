@@ -9,7 +9,7 @@ body {
 }
 #__next {
   height: 100%;
- overflow: hidden;
+  overflow: hidden;
 }
 :root {
   --black: #231b1b;
@@ -61,7 +61,7 @@ button {
   justify-content: center;
   flex-direction: column;
   background: #413737;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .black-container {
   background-color: #231b1b;
