@@ -23,9 +23,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  position: fixed;
   background: var(--grey);
-  scroll-behavior: smooth;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 
 main {
@@ -36,7 +39,6 @@ main {
   flex-direction: column;
   justify-content: flex-end;
   overflow-x: hidden;
-  overflow-y: visible;
   scroll-behavior: smooth;
   position: relative;
   align-self: flex-start;
@@ -44,7 +46,6 @@ main {
 }
 .main-page {
   padding: 52px 0 0 0;
-  overflow: hidden;
   justify-content: flex-start;
 }
 .messages-page {
@@ -70,8 +71,8 @@ button {
   border-radius: 23px;
   display: flex;
   transition: 0.2s ease-out;
-  overflow: hidden;
   z-index: 9;
+  pointer-events: none;
 }
 .header {
   align-items: center;
@@ -115,9 +116,7 @@ button {
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  /* height: 44px; */
   height: auto;
-  /* margin: 2px 0; */
   flex-shrink: 0;
   transition: 0.2s ease-in-out;
   position: fixed;
@@ -137,14 +136,12 @@ button {
 .new-message textarea {
   resize: none;
   font-size: 18px;
-  /* height: 40px; */
   margin: 3px 0 3px 3px;
   background: #413737;
   border: none;
   border-radius: 20px;
   flex: 5;
   padding: 4px 10px;
-  /* line-height: 40px; */
   overflow-x: hidden;
   -moz-appearance: none;
   appearance: none;
