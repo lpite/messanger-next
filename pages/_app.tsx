@@ -106,6 +106,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Messanger</title>
         <meta name="description" content="Messanger" />
         <link rel="icon" href="/cat.jpg" />
+        <link rel="apple-touch-icon" href="/cat.png" sizes="180x180" />
+        <link rel="apple-touch-icon" href="/cat.png" sizes="152x152" />
+        <link rel="apple-touch-icon" href="/cat.png" sizes="76x76" />
       </Head>
       <Provider store={store}>
         <SocketIo />
