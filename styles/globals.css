@@ -72,7 +72,6 @@ button {
   display: flex;
   transition: 0.2s ease-out;
   z-index: 9;
-  pointer-events: none;
 }
 .header {
   align-items: center;
@@ -81,6 +80,7 @@ button {
   position: fixed;
   align-self: center;
   top: 3px;
+  pointer-events: none;
 }
 .header-button {
   border: none;
