@@ -95,8 +95,8 @@ function NewMessage({ onFocusInput, onBlurInput }) {
       <button onClick={sendMessage}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="27"
-          height="27"
+          width="30"
+          height="30"
           fill="currentColor"
           viewBox="0 0 16 16"
         >

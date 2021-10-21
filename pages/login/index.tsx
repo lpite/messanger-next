@@ -9,6 +9,7 @@ function Login() {
   const [value, setValue] = React.useState("");
   const [error, setError] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [step, setStep] = React.useState(0);
   const dispatch = useDispatch();
   function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.target.value);

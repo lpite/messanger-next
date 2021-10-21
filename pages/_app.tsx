@@ -121,10 +121,10 @@ if (typeof window !== "undefined") {
   if (!localStorage.getItem("id")) {
     localStorage.setItem("id", (Math.random() * 10000000).toFixed());
   }
-  window.addEventListener("scroll", (e) => {
-    e.preventDefault();
-    window.scrollTo(0, 0);
-  });
+  // window.addEventListener("scroll", (e) => {
+  //   e.preventDefault();
+  //   window.scrollTo(0, 0);
+  // });
   axios.post(`${API_URL}api/check/app/version`).then(({ data }) => {
     if (data !== appVersion) {
       if (confirm("Update?")) {

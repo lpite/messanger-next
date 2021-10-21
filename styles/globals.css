@@ -122,17 +122,6 @@ button {
   position: fixed;
   bottom: 2px;
 }
-.new-message input {
-  font-size: 20px;
-  margin: 0 0 0 3px;
-  background: #413737;
-  border: none;
-  flex: 5;
-  border-radius: 23px;
-  height: 40px;
-  padding: 0 10px;
-  color: #b18d8d;
-}
 .new-message textarea {
   resize: none;
   font-size: 18px;
@@ -153,8 +142,8 @@ button {
 }
 .new-message button {
   margin: 0 3px 0 5px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: #413737;
   border-radius: 50px;
@@ -164,7 +153,7 @@ button {
 }
 .new-message button svg {
   fill: #b18d8d;
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 .messages {
   width: 100%;
