@@ -13,6 +13,7 @@ if (typeof window !== "undefined") {
 import { API_URL } from "../../config";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../../redux/actions/messages";
+import { useRouter } from "next/router";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
   const input = React.useRef<HTMLTextAreaElement>(null);
@@ -21,6 +22,8 @@ function NewMessage({ onFocusInput, onBlurInput }) {
   const { name } = useSelector(({ user }) => user);
   //@ts-ignore
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const localId = (Math.random() * 10000).toFixed();
   function sendMessage() {
     if (text.trim()) {
@@ -34,6 +37,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
           author_id: id,
           author_name: name,
           text: input.current.value,
+          to: router.query.id.toString(),
           local_id: localId,
           status: 0,
           time: new Date().toString().slice(0, 24),
@@ -46,6 +50,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
           author_id: id,
           author_name: name,
           text: input.current.value,
+          to: router.query.id,
           local_id: localId,
         })
         .then(({ data }) => {

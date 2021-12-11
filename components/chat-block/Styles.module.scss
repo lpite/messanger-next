@@ -1,6 +1,10 @@
 .chat_link {
   width: 100%;
   text-decoration: none;
+  border: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
 }
 .chat_link:focus .chat_block {
   background: var(--grey);
@@ -32,13 +36,14 @@
   border-radius: 50%;
 }
 .chat_block_name {
-  align-self: flex-start;
+  justify-self: flex-start;
   margin-left: 5px;
   font-size: 18px;
 }
 .chat_block_text {
   margin-left: 5px;
   font-size: 14px;
+  justify-self: flex-start;
 }
 .chat_block_time {
   text-align: end;

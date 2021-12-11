@@ -1,4 +1,4 @@
-import produce from "immer";
+import produce, { setAutoFreeze } from "immer";
 import { SET_USERS, ADD_USER, REMOVE_USER } from "../types/users";
 type State = {
   users: Array<{ id: string; socketId: string; isOnline: boolean }>;
@@ -6,6 +6,7 @@ type State = {
 const initialState: State = {
   users: [],
 };
+setAutoFreeze(false);
 export default function usersReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USERS:

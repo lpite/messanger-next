@@ -1,8 +1,11 @@
 import React from "react";
+
 import Link from "next/link";
-import ChatBlock from "../components/chat-block";
 import router from "next/router";
+
 import { useSelector } from "react-redux";
+
+import ChatBlock from "../components/chat-block";
 
 function Main() {
   const { name } = useSelector(({ user }: any) => user);
@@ -13,6 +16,7 @@ function Main() {
       router.push("/login/");
     }
   }, [name]);
+
   return (
     <div className="container">
       <header className="header black-container">
@@ -26,7 +30,7 @@ function Main() {
       <main className="main-page">
         {users.map(
           (el: { id: string; socketId: string; isOnline: boolean }) => (
-            <ChatBlock chatId={el.id} online={el.isOnline} key={el.socketId} />
+            <ChatBlock chatId={el.id} online={el.isOnline} key={el.id} />
           )
         )}
       </main>

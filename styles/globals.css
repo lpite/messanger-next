@@ -39,7 +39,7 @@ main {
   flex-direction: column;
   justify-content: flex-end;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   position: relative;
   align-self: flex-start;
   justify-self: flex-start;
@@ -92,6 +92,7 @@ button {
   width: 33px;
   align-self: center;
   display: flex;
+  pointer-events: initial;
 }
 .header-button:empty {
   width: 27px;

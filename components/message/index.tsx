@@ -25,7 +25,7 @@ function MessageBlock({
       return <a href={url}>url</a>;
     });
   }
-  console.log(findUrl(text));
+  console.log(text.match(/(https?:\/\/[^\s]+)/g));
 
   return (
     <div

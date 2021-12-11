@@ -10,29 +10,23 @@ import { Message } from "../../types/message";
 import MessageBlock from "../../components/message";
 import NewMessage from "../../components/new-message";
 import Header from "../../components/header";
-import axios from "axios";
 
 function SwipeableMain() {
-  const dispatch = useDispatch();
   const ref = React.useRef(null);
   //@ts-ignore
   const { messages } = useSelector(({ messages }) => messages);
+  //@ts-ignore
+
+  const { name, id } = useSelector(({ user }) => user);
+  console.log(name, id);
 
   const router = useRouter();
+
   const handlers = useSwipeable({
     onSwipedRight: () => {
       router.push("/");
     },
   });
-  // React.useEffect(() => {
-  //   //@ts-ignore
-  //   if (!messages.length) {
-  //     axios.post("http://46.63.31.3:3002/api/message/get").then(({ data }) => {
-  //       // setMessages(data.messages);
-  //     });
-  //   } else {
-  //   }
-  // }, []);
   React.useEffect(() => {
     if (ref.current) {
       ref.current.scrollTo({ top: ref.current.scrollHeight });
@@ -48,17 +42,25 @@ function SwipeableMain() {
     // set the el to a ref you can access yourself
     ref.current = el;
   };
-  const list = messages.map((el: Message) => (
-    <MessageBlock
-      key={!el.id ? el.local_id : el.id}
-      author_name={el.author_name}
-      author_id={el.author_id}
-      text={el.text}
-      time={el.time}
-      id={el.id}
-      status={el.status}
-    />
-  ));
+  const list = messages
+    .filter(
+      (el: Message) =>
+        el.author_id.toString() === router.query.id ||
+        el.to.toString() === router.query.id
+    )
+    // .filter((el) => el.author_id === id && el.to.toString() === router.query.id)
+    .map((el: Message) => (
+      <MessageBlock
+        key={!el.id ? el.local_id : el.id}
+        author_name={el.author_name}
+        author_id={el.author_id}
+        text={el.text}
+        to={el.to}
+        time={el.time}
+        id={el.id}
+        status={el.status}
+      />
+    ));
 
   return (
     <main {...handlers} ref={refPassthrough} className="messages-page">

@@ -6,6 +6,10 @@ import { CircularProgress } from "@mui/material";
 import styles from "./Styles.module.css";
 
 function Login() {
+  let id = 0;
+  if (typeof window !== "undefined") {
+    id = parseInt(localStorage.getItem("id"));
+  }
   const [value, setValue] = React.useState("");
   const [error, setError] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
@@ -18,7 +22,7 @@ function Login() {
   function onSubmitForm(e: React.FormEvent) {
     e.preventDefault();
     if (value.trim()) {
-      dispatch(loginUser(value));
+      dispatch(loginUser(value, id));
       setIsLoading(true);
       setTimeout(() => {
         router.push("/");
