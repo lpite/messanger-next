@@ -6,9 +6,7 @@
   margin: 0;
   padding: 0;
 }
-.chat_link:focus .chat_block {
-  background: var(--grey);
-}
+
 .chat_block {
   width: 100%;
   height: 56px;
@@ -17,6 +15,10 @@
   grid-template-columns: 54px 1fr 50px;
   grid-template-rows: 50% 50%;
   color: #b18d8d;
+  cursor: pointer;
+}
+.chat_block :focus {
+  background: var(--grey);
 }
 .chat_block_image_wrapper {
   width: 52px;
