@@ -126,12 +126,12 @@ if (typeof window !== "undefined") {
   //   e.preventDefault();
   //   window.scrollTo(0, 0);
   // });
-  axios.post(`${API_URL}api/check/app/version`).then(({ data }) => {
-    if (data !== appVersion) {
-      if (confirm("Update?")) {
-        window.location.reload();
-      }
-    }
-  });
+  // axios.post(`${API_URL}api/check/app/version`).then(({ data }) => {
+  //   if (data !== appVersion) {
+  //     if (confirm("Update?")) {
+  //       window.location.reload();
+  //     }
+  //   }
+  // });
 }
 export default MyApp;

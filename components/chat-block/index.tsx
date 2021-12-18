@@ -8,17 +8,20 @@ function ChatBlock({ chatId, online }) {
   //@ts-ignore
   const { messages } = useSelector(({ messages }) => messages);
   const [lastMessage, setLastMessage] = React.useState<any>({});
-
-  const router = useRouter();
-  React.useEffect(() => {
-    setLastMessage(
-      messages.reverse().find((el: Message) => el.author_id == chatId)
-    );
-  }, [messages, chatId]);
   let id = 0;
   if (typeof window !== "undefined") {
     id = parseInt(localStorage.getItem("id"));
   }
+  const router = useRouter();
+  React.useEffect(() => {
+    const newMessages = messages
+      // .reverse()
+      .find((el: Message) => el.author_id == chatId || el.to == chatId);
+    // setLastMessage(
+
+    // );
+  }, [messages, chatId, id]);
+
   if (chatId === id) {
     return null;
   }

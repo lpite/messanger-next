@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/actions/user";
 import { CircularProgress } from "@mui/material";
 import styles from "./Styles.module.css";
+import axios from "axios";
+import { API_URL } from "../../config";
 
 function Login() {
   let id = 0;
@@ -27,6 +29,12 @@ function Login() {
       setTimeout(() => {
         router.push("/");
       }, 500);
+      axios
+        .post(`${API_URL}api/user/change/status`, {
+          id: id,
+          isOnline: true,
+        })
+        .catch(() => {});
     } else {
       setError("Empty field");
     }

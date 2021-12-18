@@ -48,6 +48,9 @@ function SwipeableMain() {
         el.author_id.toString() === router.query.id ||
         el.to.toString() === router.query.id
     )
+    .sort((fir, sec) => {
+      sec.id - fir.id;
+    })
     // .filter((el) => el.author_id === id && el.to.toString() === router.query.id)
     .map((el: Message) => (
       <MessageBlock
