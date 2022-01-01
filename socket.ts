@@ -6,7 +6,3 @@ let id = 0;
 if (typeof window !== "undefined") {
   id = parseInt(localStorage.getItem("id"));
 }
-
-if (id !== 0) {
-  socket.emit("new-connection", id);
-}

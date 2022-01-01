@@ -1,58 +1,52 @@
-import produce, { setAutoFreeze } from "immer";
-import { SET_USERS, ADD_USER, REMOVE_USER } from "../types/users";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type State = {
-  users: Array<{ id: string; socketId: string; isOnline: boolean }>;
+  users: Array<User>;
 };
 const initialState: State = {
   users: [],
 };
-setAutoFreeze(false);
-export default function usersReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_USERS:
-      return {
-        ...state,
-        users: action.payload,
-      };
-    case ADD_USER: {
-      if (!state.users.find((el) => el.id === action.payload.id)) {
-        return {
-          ...state,
-          users: [...state.users, action.payload],
-        };
-      }
-      const newUsers = produce(state.users, (draft) => {
-        const user = draft.find((el) => el.id === action.payload.id);
-        if (user) {
-          draft[draft.indexOf(user)] = {
-            id: user.id,
-            socketId: user.socketId,
-            isOnline: true,
-          };
-        }
-      });
-      return {
-        ...state,
-        users: newUsers,
-      };
-    }
-    case REMOVE_USER: {
-      const newUsers = produce(state.users, (draft) => {
-        const user = draft.find((el) => el.id === action.payload.id);
-        if (user) {
-          draft[draft.indexOf(user)] = {
-            id: user.id,
-            socketId: user.socketId,
-            isOnline: false,
-          };
-        }
-      });
-      return {
-        ...state,
-        users: newUsers,
-      };
-    }
-    default:
-      return state;
-  }
+interface User {
+  id: string;
+  socketId: string;
+  isOnline: boolean;
+  name: string;
 }
+const users = createSlice({
+  name: "users",
+  initialState: initialState,
+  reducers: {
+    setUsers(state, action: PayloadAction<Array<any>>) {
+      state.users = action.payload;
+    },
+    changeUserStatus(state, action: PayloadAction<User>) {
+      const user = state.users.find((user) => user.id === action.payload.id);
+      if (user) {
+        if (action.payload.isOnline) {
+          state.users[state.users.indexOf(user)] = {
+            isOnline: action.payload.isOnline,
+            id: action.payload.id,
+            socketId: action.payload.socketId,
+            name: action.payload.name,
+          };
+        } else {
+          state.users[state.users.indexOf(user)] = {
+            isOnline: false,
+            id: action.payload.id,
+            socketId: user.socketId,
+            name: user.name,
+          };
+        }
+      } else {
+        state.users.push({
+          isOnline: action.payload.isOnline,
+          id: action.payload.id,
+          socketId: action.payload.socketId,
+          name: action.payload.name,
+        });
+      }
+    },
+  },
+});
+export const { setUsers, changeUserStatus } = users.actions;
+
+export default users.reducer;

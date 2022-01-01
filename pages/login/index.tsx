@@ -1,11 +1,11 @@
 import router from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/actions/user";
 import { CircularProgress } from "@mui/material";
 import styles from "./Styles.module.css";
 import axios from "axios";
 import { API_URL } from "../../config";
+import { loginMe } from "../../redux/reducers/me";
 
 function Login() {
   let id = 0;
@@ -24,17 +24,19 @@ function Login() {
   function onSubmitForm(e: React.FormEvent) {
     e.preventDefault();
     if (value.trim()) {
-      dispatch(loginUser(value, id));
+      dispatch(loginMe({ name: value, id: id }));
       setIsLoading(true);
       setTimeout(() => {
         router.push("/");
       }, 500);
-      axios
-        .post(`${API_URL}api/user/change/status`, {
-          id: id,
-          isOnline: true,
-        })
-        .catch(() => {});
+      if (id !== null) {
+        axios
+          .post(`${API_URL}api/user/change/status`, {
+            id: id,
+            isOnline: true,
+          })
+          .catch(() => {});
+      }
     } else {
       setError("Empty field");
     }

@@ -2,7 +2,12 @@ import React from "react";
 import Link from "next/link";
 import styles from "./Styles.module.css";
 
-function Header({ top }) {
+interface HeaderProps {
+  top: any;
+  name?: string;
+}
+
+function Header({ top, name }: HeaderProps) {
   return (
     <header className="header black-container" style={{ top: `${top}px` }}>
       <Link href="/">
@@ -23,7 +28,7 @@ function Header({ top }) {
       </Link>
       <Link href="/profile/1">
         <a>
-          <span className="header-text">Name</span>
+          <span className="header-text">{name ? name : "Name"}</span>
         </a>
       </Link>
       <Link href="/profile/1">

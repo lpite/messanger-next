@@ -1,24 +1,19 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSwipeable } from "react-swipeable";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import { Message } from "../../types/message";
 import MessageBlock from "../../components/message";
 import NewMessage from "../../components/new-message";
 import Header from "../../components/header";
+import { AppState } from "../../redux/store";
 
 function SwipeableMain() {
   const ref = React.useRef(null);
-  //@ts-ignore
-  const { messages } = useSelector(({ messages }) => messages);
-  //@ts-ignore
+  const { messages } = useSelector(({ messages }: AppState) => messages);
 
-  const { name, id } = useSelector(({ user }) => user);
-  console.log(name, id);
+  const { name, id } = useSelector(({ me }: AppState) => me);
 
   const router = useRouter();
 
@@ -48,9 +43,7 @@ function SwipeableMain() {
         el.author_id.toString() === router.query.id ||
         el.to.toString() === router.query.id
     )
-    .sort((fir, sec) => {
-      sec.id - fir.id;
-    })
+    .sort()
     // .filter((el) => el.author_id === id && el.to.toString() === router.query.id)
     .map((el: Message) => (
       <MessageBlock
@@ -58,6 +51,7 @@ function SwipeableMain() {
         author_name={el.author_name}
         author_id={el.author_id}
         text={el.text}
+        image={el.image}
         to={el.to}
         time={el.time}
         id={el.id}
@@ -74,6 +68,7 @@ function SwipeableMain() {
 
 const Home: NextPage = () => {
   const [top, settop] = React.useState(3);
+  const { users } = useSelector(({ users }: AppState) => users);
 
   function onFocusInput(e: React.FocusEvent<HTMLInputElement>) {
     if (navigator.userAgent.includes("iPhone")) {
@@ -91,7 +86,10 @@ const Home: NextPage = () => {
 
   return (
     <div className="container">
-      <Header top={top} />
+      <Header
+        top={top}
+        name={users.find((el) => el.id.toString() === router.query.id)?.name}
+      />
       <SwipeableMain />
       <NewMessage onBlurInput={onBlurInput} onFocusInput={onFocusInput} />
     </div>

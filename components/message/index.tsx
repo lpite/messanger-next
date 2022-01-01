@@ -3,12 +3,14 @@ import { Message } from "../../types/message";
 import styles from "./Styles.module.scss";
 
 import ReactTextFormat from "react-text-format";
+import { API_URL } from "../../config";
 
 function MessageBlock({
   author_id,
   author_name,
   id,
   text,
+  image,
   time,
   status,
 }: Message) {
@@ -26,9 +28,14 @@ function MessageBlock({
     <div
       className={author_id === at ? styles.message_me : styles.message_others}
     >
-      <pre className={styles.message_pre}>
-        <ReactTextFormat linkTarget="_blank">{text}</ReactTextFormat>
-      </pre>
+      {image ? (
+        <img src={`${API_URL}${image}`}></img>
+      ) : (
+        <pre className={styles.message_pre}>
+          <ReactTextFormat linkTarget="_blank">{text}</ReactTextFormat>
+        </pre>
+      )}
+
       <div className={styles.message_bottom}>
         <span className={styles.message_date}>{time}</span>
         <span

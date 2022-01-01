@@ -1,12 +1,11 @@
 import React from "react";
-import Link from "next/link";
 import styles from "./Styles.module.scss";
 import { useSelector } from "react-redux";
 import { Message } from "../../types/message";
 import { useRouter } from "next/router";
-function ChatBlock({ chatId, online }) {
-  //@ts-ignore
-  const { messages } = useSelector(({ messages }) => messages);
+import { AppState } from "../../redux/store";
+function ChatBlock({ chatId, online, name }) {
+  const { messages } = useSelector(({ messages }: AppState) => messages);
   const [lastMessage, setLastMessage] = React.useState<any>({});
   let id = 0;
   if (typeof window !== "undefined") {
@@ -41,7 +40,7 @@ function ChatBlock({ chatId, online }) {
       >
         <img src="/cat.jpg" alt="" className={styles.chat_block_image} />
       </div>
-      <span className={styles.chat_block_name}>{chatId}</span>
+      <span className={styles.chat_block_name}>{name ? name : chatId}</span>
       <span className={styles.chat_block_time}>
         {lastMessage?.time?.slice(15, 21)}
       </span>

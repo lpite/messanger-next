@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Message } from "../../types/message";
 import axios from "axios";
+import styles from "./NewMessage.module.scss";
 
 let id = 0;
 if (typeof window !== "undefined") {
@@ -12,15 +12,14 @@ if (typeof window !== "undefined") {
 }
 import { API_URL } from "../../config";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../../redux/actions/messages";
 import { useRouter } from "next/router";
+import { AppState } from "../../redux/store";
+import { addMessage, updateMessage } from "../../redux/reducers/messages";
 
 function NewMessage({ onFocusInput, onBlurInput }) {
   const input = React.useRef<HTMLTextAreaElement>(null);
   const [text, setText] = React.useState("");
-  //@ts-ignore
-  const { name } = useSelector(({ user }) => user);
-  //@ts-ignore
+  const { name } = useSelector(({ me }: AppState) => me);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -54,7 +53,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
           local_id: localId,
         })
         .then(({ data }) => {
-          dispatch({ type: "UPDATE_MESSAGE", payload: data });
+          dispatch(updateMessage(data));
         })
         .catch(() => {});
     }
@@ -84,8 +83,64 @@ function NewMessage({ onFocusInput, onBlurInput }) {
       }
     }
   }
+  const [image, setImage] = React.useState<File>();
+  async function onReadFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target?.files[0];
+    setImage(file);
+  }
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    let formData = new FormData();
+    if (image) {
+      formData.append("image", image);
+      formData.append("to", router.query.id.toString());
+      formData.append("author_id", id.toString());
+      formData.append("author_name", name);
+      formData.append("local_id", localId);
+
+      setImage(null);
+      dispatch(
+        addMessage({
+          author_id: id,
+          author_name: name,
+          text: "",
+          image: "",
+          to: router.query.id.toString(),
+          local_id: localId,
+          status: 0,
+          time: new Date().toString().slice(0, 24),
+        })
+      );
+      axios
+        .post(`${API_URL}api/message/new/image`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(({ data }) => {
+          dispatch(updateMessage(data));
+        });
+    }
+  }
   return (
-    <div className="black-container new-message">
+    <form className="black-container new-message" onSubmit={onSubmit}>
+      <label className={styles.fileLabel}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+        >
+          <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+        </svg>
+        <input
+          type="file"
+          className={styles.fileInput}
+          onChange={onReadFile}
+          accept="image/*"
+        />
+      </label>
       <textarea
         // type="text"
         onFocus={onFocusInput}
@@ -111,7 +166,7 @@ function NewMessage({ onFocusInput, onBlurInput }) {
           />
         </svg>
       </button>
-    </div>
+    </form>
   );
 }
 

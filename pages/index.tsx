@@ -6,11 +6,11 @@ import router from "next/router";
 import { useSelector } from "react-redux";
 
 import ChatBlock from "../components/chat-block";
+import { AppState } from "../redux/store";
 
 function Main() {
-  const { name } = useSelector(({ user }: any) => user);
-  const { users } = useSelector(({ users }: any) => users);
-
+  const { name } = useSelector(({ me }: AppState) => me);
+  const { users } = useSelector(({ users }: AppState) => users);
   React.useEffect(() => {
     if (!name) {
       router.push("/login/");
@@ -29,8 +29,18 @@ function Main() {
       </header>
       <main className="main-page">
         {users.map(
-          (el: { id: string; socketId: string; isOnline: boolean }) => (
-            <ChatBlock chatId={el.id} online={el.isOnline} key={el.id} />
+          (el: {
+            id: string;
+            socketId: string;
+            isOnline: boolean;
+            name: string;
+          }) => (
+            <ChatBlock
+              chatId={el.id}
+              online={el.isOnline}
+              name={el.name}
+              key={el.id}
+            />
           )
         )}
       </main>

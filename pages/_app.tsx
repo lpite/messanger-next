@@ -1,20 +1,17 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import withRedux from "next-redux-wrapper";
 import { Provider } from "react-redux";
-import { useStore } from "../redux/store";
 import React from "react";
 import { socket } from "../socket";
 import { Message } from "../types/message";
-
+import { addMessage } from "../redux/reducers/messages";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 import router from "next/router";
-import { addMessage } from "../redux/actions/messages";
-import { addUser, removeUser, setUsers } from "../redux/actions/users";
 import axios from "axios";
-import { API_URL, appVersion } from "../config";
-
+import { API_URL } from "../config";
+import store, { AppState } from "../redux/store";
+import { changeUserStatus, setUsers } from "../redux/reducers/users";
 function SocketIo() {
   let id = 0;
   if (typeof window !== "undefined") {
@@ -43,31 +40,30 @@ function SocketIo() {
       console.log(error);
     }
   }
-  // @ts-ignore
   React.useEffect(() => {
     socket.on("new-message", (message: Message) => {
       if (message.author_id !== id) {
         dispatch(addMessage(message));
       }
 
-      requestPermission(message.author_name, message.text, message.author_id);
+      requestPermission(message.author_name, message?.text, message.author_id);
     });
     socket.on("newUser", (user) => {
-      dispatch(addUser(user));
+      dispatch(changeUserStatus(user));
     });
 
     socket.on("disconnectUser", (user) => {
-      dispatch(removeUser(user));
+      dispatch(changeUserStatus(user));
     });
+    // eslint-disable-next-line
   }, [socket]);
 
-  const { name } = useSelector(({ user }: any) => user);
+  const { name } = useSelector(({ me }: AppState) => me);
   React.useEffect(() => {
     if (!name) {
       router.push("/login/");
     } else {
       axios.post(`${API_URL}api/users/get`).then(({ data }) => {
-        console.log(data);
         dispatch(setUsers(data));
       });
     }
@@ -82,7 +78,6 @@ function SocketIo() {
       };
       window.onfocus = () => {
         axios.post(`${API_URL}api/users/get`).then(({ data }) => {
-          console.log(data);
           dispatch(setUsers(data));
         });
         axios
@@ -93,13 +88,25 @@ function SocketIo() {
           .catch(() => {});
       };
     }
+    newConnection();
+    // eslint-disable-next-line
   }, [name]);
+  function newConnection() {
+    setTimeout(() => {
+      if (typeof window !== "undefined") {
+        id = parseInt(localStorage.getItem("id"));
+      }
+      if (id !== 0 && id && name) {
+        socket.emit("new-connection", { id, name });
+      } else {
+        newConnection();
+      }
+    }, 1000);
+  }
   return null;
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const store = useStore(pageProps.initialReduxState);
-
   return (
     <>
       <Head>
@@ -134,4 +141,5 @@ if (typeof window !== "undefined") {
   //   }
   // });
 }
+
 export default MyApp;
