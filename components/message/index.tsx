@@ -29,7 +29,7 @@ function MessageBlock({
       className={author_id === at ? styles.message_me : styles.message_others}
     >
       {image ? (
-        <img src={`${API_URL}${image}`}></img>
+        <img src={`${API_URL}${image}`} className={styles.message_image}></img>
       ) : (
         <pre className={styles.message_pre}>
           <ReactTextFormat linkTarget="_blank">{text}</ReactTextFormat>
