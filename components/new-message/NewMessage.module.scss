@@ -1,12 +1,13 @@
 .fileLabel {
-  width: 36px;
+  width: 30px;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   cursor: pointer;
   svg {
-    fill: white;
+    fill: gray;
+
   }
 }
 .fileInput {

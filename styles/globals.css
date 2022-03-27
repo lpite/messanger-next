@@ -139,6 +139,7 @@ button {
   appearance: none;
   line-height: 22px;
   color: #b18d8d;
+  font: inherit;
 }
 .new-message input::placeholder {
   color: #b18d8d;
