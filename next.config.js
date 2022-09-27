@@ -2,22 +2,3 @@
 module.exports = {
   reactStrictMode: true,
 };
-const withPWA = require("next-pwa");
-
-module.exports = withPWA({
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    cacheOnFrontEndNav: true,
-  },
-});
-module.exports = {
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.watch = true;
-    }
-
-    return config;
-  },
-};
