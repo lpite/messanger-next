@@ -41,7 +41,7 @@ export default function ChatPage() {
         <img src="" alt="" className="chat_image" />
       </div>
       <div className="chat_messages">
-        <div style={{ overflow: "scroll" }} ref={messagesElement}>
+        <div style={{ overflowY: "scroll" }} ref={messagesElement}>
           {Array(500)
             .fill("")
             .map((_, i) => (
