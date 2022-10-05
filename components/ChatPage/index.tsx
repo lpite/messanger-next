@@ -31,7 +31,7 @@ export default function ChatPage() {
       {...handlers}
     >
       <div className="chat_header">
-        <button onClick={closeChat} className="link_button">
+        <button onClick={closeChat} className="link_button header_button">
           Chats
         </button>
         <div className="chat_info">

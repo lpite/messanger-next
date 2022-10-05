@@ -1,3 +1,5 @@
+
+
 :root {
   --bg-color: #252838;
   --bg-color-light: #343a4f;
@@ -33,6 +35,9 @@ body,
   cursor: pointer;
   font-size: 11pt;
   color: var(--main-color);
+}
+.header_button{
+  margin-left: 15px;
 }
 
 .login_page {
@@ -94,7 +99,6 @@ body,
 .chats_page {
   height: 100%;
   width: 100%;
-
   .chats_header {
     height: 102px;
     width: 100%;
@@ -106,7 +110,7 @@ body,
   }
 
   .profile_button {
-    margin-right: 10px;
+    margin:10px 15px 0 0;
   }
   .chats_search {
     height: 12px;
@@ -200,9 +204,7 @@ body,
     border-radius: 50%;
     margin: 0 15px;
   }
-  .link_button {
-    margin-left: 15px;
-  }
+ 
   .chat_info {
     display: flex;
     flex-direction: column;
