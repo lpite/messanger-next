@@ -7,6 +7,7 @@ interface ProfilePageStore {
   displayName: string;
   openProfilePage:()=>void,
   closeProfilePage:()=>void,
+  setUser:(user:any|null)=>void
 }
 
 export const useProfilePageStore = create<ProfilePageStore>((set) => ({
@@ -21,5 +22,9 @@ export const useProfilePageStore = create<ProfilePageStore>((set) => ({
   closeProfilePage: () =>
     set(() => ({
       isOpen: false,
+    })),
+    setUser:(user) =>set(()=>({
+      userName:user?.user_metadata.name,
+      email:user?.email
     })),
 }));

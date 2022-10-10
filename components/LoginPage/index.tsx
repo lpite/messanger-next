@@ -1,79 +1,124 @@
 import React from "react";
-import { supabase } from "../../supaBase";
+import { useProfilePageStore } from "../../store/profilePageStore";
+import { useSignInPageStore } from "../../store/signInPageStore";
+
+import styles from "./LoginPage.module.scss";
 
 export default function LoginPage() {
-    const [errors, setErrors] = React.useState<string[]>([]);
+  const [errors, setErrors] = React.useState<string[]>([]);
 
-    const [userData, setUserData] = React.useState({
-      email: "",
-      name: "",
-      password: "",
-    });
-  
-    async function singUpUser(e: React.FormEvent) {
-      e.preventDefault();
-      if (userData.name.length) {
-        let { user, error } = await supabase.auth.signUp({
-          email: userData.email,
-          password: userData.password,
-        });
-        console.log(user, error);
-      } else {
-        setErrors(["Enter your name"]);
-      }
+  const [pageType, setPageType] = React.useState<"signUp" | "signIn">("signIn");
+
+  const [userData, setUserData] = React.useState({
+    email: "",
+    name: "",
+    password: "",
+  });
+
+  const { setUser } = useProfilePageStore((state) => state);
+  const { isOpen ,closeSignInPage} = useSignInPageStore((state) => state);
+
+  async function signUpUser(e: React.FormEvent) {
+    e.preventDefault();
+
+  }
+  async function signInUser(e: React.FormEvent) {
+    e.preventDefault();
+   
+  }
+
+  function onChangeEmail({ target }: React.ChangeEvent<HTMLInputElement>) {
+    setUserData({ ...userData, email: target.value });
+
+    if (!target.value.length && errors.length) {
+      setErrors(["Enter your email"]);
+    } else {
+      setErrors([]);
     }
-    async function signInWithGoogle() {
-      const { user, session, error } = await supabase.auth.signIn({
-        provider: "google",
-      });
-      console.log(user);
+  }
+
+  function onChangeName({ target }: React.ChangeEvent<HTMLInputElement>) {
+    setUserData({ ...userData, name: target.value });
+
+    if (!target.value.length && errors.length) {
+      setErrors(["Enter your name"]);
+    } else {
+      setErrors([]);
     }
+  }
+
+  function onChangePassword({ target }: React.ChangeEvent<HTMLInputElement>) {
+    setUserData({ ...userData, password: target.value });
+
+    if (!target.value.length && errors.length) {
+      setErrors(["Enter your password"]);
+    } else {
+      setErrors([]);
+    }
+  }
+
+  function changePageType() {
+    if (pageType === "signIn") {
+      setPageType("signUp");
+    } else {
+      setPageType("signIn");
+    }
+    setUserData({ email: "", name: "", password: "" });
+    setErrors([]);
+  }
+
   return (
-    <main className="login_page">
-      <form action="" onSubmit={singUpUser} className="login_page__form">
-        <h1 className="form_name">Sign up</h1>
-        <label className="label">
+    <main className={isOpen ? styles["login_page--open"] : styles.login_page}>
+      <form
+        action="/"
+        onSubmit={pageType === "signUp" ? signUpUser : signInUser}
+        className={styles.login_page__form}
+      >
+        <h1 className={styles.form_name}>{pageType==="signUp"?"Sign up":"Sign in"}</h1>
+        <label className={styles.label}>
           Email
           <input
-            onChange={({ target }) =>
-              setUserData({ ...userData, email: target.value })
-            }
+            onChange={onChangeEmail}
             value={userData.email}
             type="email"
-            className="input"
+            className={styles.input}
           />
         </label>
-        <label className="label">
-          Name
-          <input
-            onChange={({ target }) =>
-              setUserData({ ...userData, name: target.value })
-            }
-            value={userData.name}
-            type="text"
-            className="input"
-          />
-        </label>
-        <label className="label">
+        {pageType === "signUp" ? (
+          <label className={styles.label}>
+            Name
+            <input
+              onChange={onChangeName}
+              value={userData.name}
+              type="text"
+              className={styles.input}
+            />
+          </label>
+        ) : (
+          ""
+        )}
+
+        <label className={styles.label}>
           Password
           <input
-            onChange={({ target }) =>
-              setUserData({ ...userData, password: target.value })
-            }
+            onChange={onChangePassword}
             value={userData.password}
             type="password"
-            className="input"
+            className={styles.input}
           />
         </label>
-        <div className="form_buttons">
-          <span>{errors[0]}</span>
-
-          <button className="button sign_up_button">Sign up</button>
-          <button type="button" className="link_button">
-            Sign in
+        <div className={styles.form_buttons}>
+          <span className={styles.error_message}>{errors[0]}</span>
+          <button className="button big_button">
+            {pageType === "signIn" ? "Sign In" : "Sign Up"}
           </button>
-
-          {/* <button type="button" onClick={signInWithGoogle}>google</button> */}
+          <button
+            type="button"
+            className="link_button"
+            onClick={changePageType}
+          >
+            {pageType === "signUp" ? "Sign In" : "Sign Up"}
+          </button>
         </div>
       </form>
     </main>

@@ -7,12 +7,13 @@ import ProfilePage from "../components/ProfilePage";
 export default function Index() {
 
   //Затичка
-  if (false) {
-    return <LoginPage />;
-  }
+  // if (!false) {
+  //   return <LoginPage />;
+  // }
 
   return (
     <>
+      <LoginPage />
       <ChatsPage />
       <ChatPage />
       <ProfilePage />;

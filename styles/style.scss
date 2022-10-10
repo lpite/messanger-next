@@ -1,11 +1,10 @@
-
-
 :root {
   --bg-color: #252838;
   --bg-color-light: #343a4f;
   --main-color: #3369f3;
   --gray: #9898b0;
   --gray-dark: #4c546f;
+  --red:#F44D4D
 }
 * {
   font-family: "Roboto", sans-serif;
@@ -27,6 +26,16 @@ body,
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  color: white;
+  font-size: 13pt;
+  font-weight: 500;
+}
+
+.big_button {
+  height: 37px;
+  width: 280px;
+  margin: 10px 0;
+  flex-shrink: 0;
 }
 
 .link_button {
@@ -36,66 +45,11 @@ body,
   font-size: 11pt;
   color: var(--main-color);
 }
-.header_button{
+.header_button {
   margin-left: 15px;
 }
 
-.login_page {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.login_page__form {
-  margin: 0 15px;
-  padding: 15px 0;
-  // height: 400px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 33px;
-  background-color: var(--bg-color-light);
-  border-radius: 12px;
-  .form_name {
-    font-size: 20pt;
-    font-weight: 500;
-    color: white;
-    margin: 0;
-  }
-  .label {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    color: var(--gray);
-    font-weight: 500;
-    font-size: 12pt;
-  }
-  .input {
-    width: 280px;
-    height: 33px;
-    background-color: var(--bg-color);
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    font-size: 13pt;
-    font-weight: 500;
-    color: white;
-  }
-  .form_buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .sign_up_button {
-    width: 280px;
-    height: 37px;
-    color: white;
-    font-size: 13pt;
-  }
-}
+
 .chats_page {
   height: 100%;
   width: 100%;
@@ -110,7 +64,7 @@ body,
   }
 
   .profile_button {
-    margin:10px 15px 0 0;
+    margin: 10px 15px 0 0;
   }
   .chats_search {
     height: 12px;
@@ -204,7 +158,7 @@ body,
     border-radius: 50%;
     margin: 0 15px;
   }
- 
+
   .chat_info {
     display: flex;
     flex-direction: column;
@@ -233,17 +187,16 @@ body,
       padding: 10px;
       display: flex;
       flex-direction: column;
-      color: #E2E2E4;
+      color: #e2e2e4;
 
-      .message_details{
+      .message_details {
         align-self: flex-end;
-
       }
-      .message_time{
+      .message_time {
         font-size: 9pt;
         color: #717790;
       }
-      .message_status{
+      .message_status {
         font-size: 9pt;
         margin-left: 5px;
         width: 15px;
@@ -255,8 +208,8 @@ body,
       width: 100%;
       display: flex;
       justify-content: flex-start;
-      
-      .message{
+
+      .message {
         background-color: var(--gray-dark);
         border-radius: 0 8px 8px 8px;
       }
@@ -264,12 +217,10 @@ body,
     .message_line--own {
       justify-content: flex-end !important;
 
-      .message{
+      .message {
         background-color: var(--bg-color);
         border-radius: 8px 8px 0 8px;
-
       }
-
     }
   }
 
