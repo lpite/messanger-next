@@ -1,6 +1,8 @@
 import { Pool } from "pg";
 
+
 let conn;
+
 
 if (!conn) {
   conn = new Pool({
@@ -10,6 +12,7 @@ if (!conn) {
     port: parseInt(process.env.PGSQL_PORT || "5432"),
     database: process.env.PGSQL_DATABASE,
   });
+
 }
 
 export default conn as Pool;

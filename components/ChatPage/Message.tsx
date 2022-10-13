@@ -25,7 +25,6 @@ export default function Message({
           <span className="message_time" suppressHydrationWarning>{time}</span>
           {ownerName === "me" ? (
             <img src="/messageStatus.svg" className="message_status" alt="" />
-            // <span className="message_status">{status}</span>
           ) : (
             ""
           )}

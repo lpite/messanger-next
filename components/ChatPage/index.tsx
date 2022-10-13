@@ -25,6 +25,17 @@ export default function ChatPage() {
     }
   }, []);
 
+  const [messages, setMessages] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch(`/api/getMessages/?id=1`).then(res => res.json())
+      .then(({ status, data }) => {
+        if (status === "success") {
+          setMessages(data)
+        }
+      })
+  }, [])
+
   return (
     <div
       className={`chat_page ${isOpen ? "chat_page__open" : ""}`}
@@ -42,13 +53,12 @@ export default function ChatPage() {
       </div>
       <div className="chat_messages">
         <div style={{ overflowY: "scroll" }} ref={messagesElement}>
-          {Array(500)
-            .fill("")
+          {messages
             .map((_, i) => (
               <Message
                 key={i}
                 ownderId="1"
-                ownerName={i%2===0?"me":""}
+                ownerName={i % 2 === 0 ? "me" : ""}
                 text="hi lorem impsum))"
                 time={"20:15"}
                 status="sent"

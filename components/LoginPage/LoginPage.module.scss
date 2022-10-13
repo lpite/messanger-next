@@ -9,11 +9,13 @@
   z-index: 3;
   background-color: var(--bg-color);
   transform: translateX(-100%);
+  transition: 0.2s ease-in-out;
 }
 
 .login_page--open {
   @extend .login_page;
   transform: translateX(0);
+  transition: 0.2s ease-in-out;
 }
 
 .login_page__form {

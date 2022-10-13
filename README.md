@@ -6,8 +6,6 @@
 1. React
 2. Next.js
 3. Scss
+4. PostgreSql
 
 
-## + In Future
-
-1. SupaBase

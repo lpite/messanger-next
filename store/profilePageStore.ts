@@ -2,18 +2,16 @@ import create from "zustand";
 
 interface ProfilePageStore {
   isOpen: boolean;
-  userName: string;
-  email: string;
+  login: string;
   displayName: string;
   openProfilePage:()=>void,
   closeProfilePage:()=>void,
-  setUser:(user:any|null)=>void
+  setUser:(user:{login:string,displayName:string})=>void
 }
 
 export const useProfilePageStore = create<ProfilePageStore>((set) => ({
   isOpen: false,
-  userName: "",
-  email: "",
+  login: "",
   displayName: "",
   openProfilePage: () =>
     set(() => ({
@@ -24,7 +22,7 @@ export const useProfilePageStore = create<ProfilePageStore>((set) => ({
       isOpen: false,
     })),
     setUser:(user) =>set(()=>({
-      userName:user?.user_metadata.name,
-      email:user?.email
+      login:user.login,
+      displayName:user.displayName
     })),
 }));

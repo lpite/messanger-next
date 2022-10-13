@@ -3,15 +3,15 @@ import create from 'zustand'
 interface ChatPageStore{
     isOpen:boolean,
     chatId:string,
-    openChat:()=>void,
+    openChat:(id:string)=>void,
     closeChat:()=>void
 }
-
 export const useChatPageStore = create<ChatPageStore>((set) => ({
     isOpen: false,
     chatId:"",
-    openChat: () => set(()=>({  
-        isOpen:true
+    openChat: (id) => set(()=>({  
+        isOpen:true,
+        chatId:id
     })),
     closeChat:()=>set(()=>({
         isOpen:false
