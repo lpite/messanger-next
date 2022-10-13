@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import conn from "../../lib/db";
+
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
