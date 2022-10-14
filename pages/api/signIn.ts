@@ -32,10 +32,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		
 		const user = {
+			id: result.rows[0].id,
 			displayName: result.rows[0].name,
 			login: result.rows[0].login
 		}
-
+		res.setHeader("set-cookie", `sessionId=${result.rows[0].id}; path=/; samesite=lax; httponly;`)
 		res.send({ status: "success", data: user })
 
 

@@ -1,10 +1,23 @@
 import React from "react";
 import { useSwipeable } from "react-swipeable";
+import { supabase } from "../../lib/supaBase";
 import { useChatPageStore } from "../../store/chatPageStore";
+import { useProfilePageStore } from "../../store/profilePageStore";
 import Message from "./Message";
+import NewMessageForm from "./NewMessageForm";
+
+interface IMessage {
+  text: string,
+  time: string,
+  owner_id:string,
+  owner_login: string,
+  owner_name: string
+}
+
 
 export default function ChatPage() {
-  const { isOpen, closeChat } = useChatPageStore((state) => state);
+  const { isOpen, closeChat, chatName, chatId } = useChatPageStore((state) => state);
+  const { login } = useProfilePageStore(state => state)
 
   const handlers = useSwipeable({
     onSwipedRight: () => {
@@ -12,6 +25,7 @@ export default function ChatPage() {
       closeChat();
     },
   });
+  const [messages, setMessages] = React.useState<IMessage[]>([]);
 
   const messagesElement = React.useRef<HTMLDivElement>(null);
 
@@ -23,18 +37,35 @@ export default function ChatPage() {
         messagesElement.current.scrollHeight
       );
     }
-  }, []);
+  }, [messages]);
 
-  const [messages, setMessages] = React.useState([]);
+  const listenMessages = supabase
+    .channel('table-db-changes')
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'messages', filter: "chat_id=eq.1" },
+      async (payload) => {
+        setMessages([...messages, payload.new as IMessage])
+      }
+    )
+    .subscribe()
+
 
   React.useEffect(() => {
-    fetch(`/api/getMessages/?id=1`).then(res => res.json())
-      .then(({ status, data }) => {
-        if (status === "success") {
-          setMessages(data)
-        }
-      })
-  }, [])
+    if (login.length) {
+      fetch(`/api/getMessages/?id=1`).then(res => res.json())
+        .then(({ status, data }) => {
+          if (status === "success") {
+            setMessages(data)
+          }
+        })
+    }
+
+  }, [login])
+
+  if (!login.length) {
+    return null;
+  }
 
   return (
     <div
@@ -46,7 +77,7 @@ export default function ChatPage() {
           Chats
         </button>
         <div className="chat_info">
-          <span className="chat_name">lpiteee</span>
+          <span className="chat_name">{chatName}</span>
           <span className="last_online">last seen a month ago</span>
         </div>
         <img src="" alt="" className="chat_image" />
@@ -54,22 +85,20 @@ export default function ChatPage() {
       <div className="chat_messages">
         <div style={{ overflowY: "scroll" }} ref={messagesElement}>
           {messages
-            .map((_, i) => (
+            .map((message, i) => (
               <Message
                 key={i}
-                ownderId="1"
-                ownerName={i % 2 === 0 ? "me" : ""}
-                text="hi lorem impsum))"
-                time={"20:15"}
+                ownerId={message.owner_id}
+                ownerLogin={message.owner_login}
+                ownerName={message.owner_name}
+                text={message.text}
+                time={message.time}
                 status="sent"
               />
             ))}
         </div>
       </div>
-      <form action="" className="new_message">
-        <input type="text" className="new_message__input" />
-        <button className="new_message__button">s</button>
-      </form>
+      <NewMessageForm />
     </div>
   );
 }

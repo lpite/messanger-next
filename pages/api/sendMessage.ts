@@ -1,6 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import conn from "../../lib/db";
-
+/* 
+create table messages(
+	id serial PRIMARY key,
+	owner_id int NOT null,
+	chat_id int NOT null,
+	text text,
+	time varchar(13),
+	CONSTRAINT fk_owner_id FOREIGN KEY (owner_id) REFERENCES users (id),
+	CONSTRAINT fk_chat_id FOREIGN KEY (chat_id) REFERENCES users (id)
+);
+*/
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -9,15 +19,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		const body = JSON.parse(req.body);
 
-		const ownerId = body.ownerId;
+		const ownerSessionId = body.ownerId || req.cookies.sessionId;
 		const chatId = body.chatId;
 		const text = body.text;
 		const time = Number(new Date()).toString();
 
-		const query = `INSERT INTO messages(owner_id,chat_id,text,time) VALUES($1,$2,$3,$4)`;
-    
-		const values = [ownerId, chatId, text,time];
-		const result = await conn.query(query, values);
+
+		const messageQuery = `INSERT INTO messages(owner_id,chat_id,text,time) VALUES($1,$2,$3,$4)`;    
+		const messageValues = [ownerSessionId, chatId, text,time];
+		const result = await conn.query(messageQuery, messageValues);
 
 		res.send({ status: "success" });
 	} catch (error) {

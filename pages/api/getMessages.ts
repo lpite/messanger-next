@@ -5,7 +5,7 @@
 		chat_id int NOT null,
 		CONSTRAINT fk_owner_id FOREIGN KEY (owner_id) REFERENCES users (id),
 		text TEXT,
-		time varchar(100)
+		time varchar(13)
 	)
 
 */
@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		const chatId = req.query.id;
 
-		const query = `SELECT messages.text, messages.time,users.login,users.name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1`;
+		const query = `SELECT messages.text, messages.time,owner_id, users.login AS owner_login ,users.name AS owner_name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1`;
     
 		const values = [chatId];
 		const result = await conn.query(query, values);

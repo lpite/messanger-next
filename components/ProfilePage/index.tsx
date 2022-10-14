@@ -6,12 +6,21 @@ import styles from "./ProfilePage.module.scss";
 
 export default function ProfilePage() {
 
-  const { isOpen, closeProfilePage, displayName, login, setUser } =
+  const { isOpen, closeProfilePage,id, displayName, login, setUser } =
     useProfilePageStore((store) => store);
   const { openSignInPage } = useSignInPageStore(store => store)
 
   const [editData, setEditData] = React.useState(false);
 
+  const handlers = useSwipeable({
+    onSwipedRight: () => {
+      //close profile on right swipe
+      closeProfilePage();
+    },
+  });
+  if (!login.length) {
+    return null;
+  }
   function enableEditing() {
     setEditData(true);
   }
@@ -21,17 +30,12 @@ export default function ProfilePage() {
   }
 
   function logOut() {
-    setUser({ displayName: "", login: "" });
+    setUser({id:"", displayName: "", login: "" });
     closeProfilePage();
     openSignInPage();
   }
 
-  const handlers = useSwipeable({
-    onSwipedRight: () => {
-      //close profile on right swipe
-      closeProfilePage();
-    },
-  });
+ 
 
   return (
     <div
@@ -48,7 +52,15 @@ export default function ProfilePage() {
       </div>
       <img src="/cat.jpg" alt="" className={styles.user_photo} />
       <span className={styles.user_name}>Lpite</span>
+
       <div className={styles.user_details}>
+        <div className={styles.details_line}>
+          <span className={styles.field_name}>User ID</span>
+          <span className={styles.field_data}>
+            {id}
+          </span>
+        </div>
+        <hr />
         <div className={styles.details_line}>
           <span className={styles.field_name}>Login</span>
           <span className={styles.field_data}>

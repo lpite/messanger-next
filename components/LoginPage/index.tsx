@@ -89,7 +89,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className={isOpen ? styles["login_page--open"] : styles.login_page}>
+    <div className={isOpen ? styles["login_page--open"] : styles.login_page}>
       <form
         action="/"
         onSubmit={pageType === "signUp" ? signUpUser : signInUser}
@@ -142,6 +142,6 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-    </main>
+    </div>
   );
 }

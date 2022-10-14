@@ -11,7 +11,7 @@ export default function ChatItem({ chatId, chatName, lastMessageText, lastMessag
   const { openChat } = useChatPageStore(state => state)
 
   return (
-    <div className="chat_item" onClick={() => openChat(chatId)}>
+    <div className="chat_item" onClick={() => openChat({chatId,chatName})}>
       <img src="" alt="" className="chat_photo" />
       <div className="chat_details">
         <span className="chat_name">{chatName}</span>
@@ -20,7 +20,7 @@ export default function ChatItem({ chatId, chatName, lastMessageText, lastMessag
       </div>
       <div className="chat_time_unread">
         <span className="chat_time" suppressHydrationWarning>
-          {lastMessageTime}
+          {(new Date(parseInt(lastMessageTime)).toLocaleTimeString())}
         </span>
         <span className="chat_unread_count">1</span>
       </div>

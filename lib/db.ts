@@ -3,8 +3,12 @@ import { Pool } from "pg";
 
 let conn;
 
+declare global {
+  var conn: Pool
+}
 
-if (!conn) {
+
+if (!global.conn) {
   conn = new Pool({
     user: process.env.PGSQL_USER,
     password: process.env.PGSQL_PASSWORD,
@@ -12,7 +16,8 @@ if (!conn) {
     port: parseInt(process.env.PGSQL_PORT || "5432"),
     database: process.env.PGSQL_DATABASE,
   });
+  global.conn = conn;
 
 }
 
-export default conn as Pool;
+export default global.conn;
