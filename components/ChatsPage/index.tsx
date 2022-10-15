@@ -4,7 +4,13 @@ import useSWR from "swr";
 import { useProfilePageStore } from "../../store/profilePageStore";
 import ChatItem from "./ChatItem";
 
-
+export interface IChat {
+  chatId: string,
+  chatName: string,
+  chatType:string,
+  lastMessageText: string,
+  lastMessageTime: string
+}
 
 export default function ChatsPage() {
 
@@ -13,13 +19,13 @@ export default function ChatsPage() {
   const { openProfilePage, login } = useProfilePageStore((state) => state);
 
 
-  const { data, error } = useSWR([login], async () => {
+  const { data, error } = useSWR(["getChats",login], async () => {
     if (login.length) {
       const chats = await fetch("/api/getChats").then(res => res.json())
-      return chats.data as { chatId: string, chatName: string, lastMessageText: string, lastMessageTime: string }[]
+      return chats.data as IChat[]
 
     }
-    return [] as { chatId: string, chatName: string, lastMessageText: string, lastMessageTime: string }[]
+    return [] as IChat[]
      
   })
 
@@ -47,6 +53,7 @@ export default function ChatsPage() {
                 key={i}  
                 chatId={chat.chatId}
                 chatName={chat.chatName}
+                chatType={chat.chatType}
                 lastMessageText={chat.lastMessageText}
                 lastMessageTime={chat.lastMessageTime}
               />

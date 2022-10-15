@@ -1,17 +1,22 @@
+import { IChat } from ".";
 import { useChatPageStore } from "../../store/chatPageStore";
 
-interface ChatItemProps {
-  chatId: string,
-  chatName: string,
-  lastMessageText: string,
-  lastMessageTime: string
-}
 
-export default function ChatItem({ chatId, chatName, lastMessageText, lastMessageTime }: ChatItemProps) {
-  const { openChat } = useChatPageStore(state => state)
+
+export default function ChatItem({ chatId, chatName,chatType, lastMessageText, lastMessageTime }: IChat) {
+  const { openChatPage,setChatPageInfo } = useChatPageStore(state => state)
+
+  function openChat(){
+    setChatPageInfo({
+      chatId,
+      chatName,
+      chatType
+    })
+    openChatPage()
+  }
 
   return (
-    <div className="chat_item" onClick={() => openChat({chatId,chatName})}>
+    <div className="chat_item" onClick={openChat}>
       <img src="" alt="" className="chat_photo" />
       <div className="chat_details">
         <span className="chat_name">{chatName}</span>

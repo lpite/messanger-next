@@ -19,6 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 					//це все має бути через джоін
 					chatId: "1",
 					chatName: "Test chat",
+					chatType: "group",
 					lastMessageText: result.rows[0]?.text,
 					lastMessageTime: result.rows[0]?.time
 				}

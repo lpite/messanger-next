@@ -9,8 +9,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Messanger</title>
-        <meta name="description" content="Messanger" />
+        <title>Messenger</title>
+        <meta name="description" content="Messenger" />
         <link rel="icon" href="/cat.jpg" />
         <link rel="apple-touch-icon" href="/cat.png" sizes="180x180" />
         <link rel="apple-touch-icon" href="/cat.png" sizes="152x152" />

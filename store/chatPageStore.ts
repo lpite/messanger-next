@@ -2,29 +2,40 @@ import create from 'zustand'
 
 
 
-interface ChatPageStore{
-    isOpen:boolean,
-    chatId:string,
-    chatName:string,
-    openChat:({chatId,chatName}:OpenChatParams)=>void,
-    closeChat:()=>void
+interface ChatPageStore {
+    isOpen: boolean,
+    chatId: string,
+    chatName: string,
+    chatType: string,
+    openChatPage: () => void,
+    closeChatPage: () => void,
+    setChatPageInfo: (info: SetChatPageInfo) => void
 }
 
-interface OpenChatParams{
-    chatId:string,
-    chatName:string
+interface OpenChatParams {
+    chatId: string,
+    chatName: string
+}
+interface SetChatPageInfo {
+    chatId: string,
+    chatName: string,
+    chatType: string,
 }
 
 export const useChatPageStore = create<ChatPageStore>((set) => ({
     isOpen: false,
-    chatId:"",
-    chatName:"",
-    openChat: ({chatId,chatName}) => set(()=>({  
-        isOpen:true,
-        chatId:chatId,
-        chatName:chatName
+    chatId: "",
+    chatName: "",
+    chatType: "",
+    openChatPage: () => set(() => ({  
+        isOpen: true,
     })),
-    closeChat:()=>set(()=>({
-        isOpen:false
+    closeChatPage: () => set(() => ({
+        isOpen: false
+    })),
+    setChatPageInfo: ({ chatId, chatName, chatType }) => set(() => ({
+        chatId: chatId,
+        chatName: chatName,
+        chatType: chatType,
     }))
 }))
