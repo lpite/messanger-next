@@ -1,4 +1,5 @@
 import React from "react";
+import { io, Socket } from "socket.io-client";
 import useSWR from "swr";
 
 import { useProfilePageStore } from "../../store/profilePageStore";
@@ -7,7 +8,7 @@ import ChatItem from "./ChatItem";
 export interface IChat {
   chatId: string,
   chatName: string,
-  chatType:string,
+  chatType: string,
   lastMessageText: string,
   lastMessageTime: string
 }
@@ -19,7 +20,7 @@ export default function ChatsPage() {
   const { openProfilePage, login } = useProfilePageStore((state) => state);
 
 
-  const { data, error } = useSWR(["getChats",login], async () => {
+  const { data, error } = useSWR(["getChats", login], async () => {
     if (login.length) {
       const chats = await fetch("/api/getChats").then(res => res.json())
       return chats.data as IChat[]

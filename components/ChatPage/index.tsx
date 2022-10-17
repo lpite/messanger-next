@@ -1,11 +1,14 @@
 import React from "react";
 import { useSwipeable } from "react-swipeable";
-import useSWR from "swr";
-import { supabase } from "../../lib/supaBase";
+import { io, Socket } from "socket.io-client";
 import { useChatPageStore } from "../../store/chatPageStore";
 import { useProfilePageStore } from "../../store/profilePageStore";
 import Message from "./Message";
 import NewMessageForm from "./NewMessageForm";
+
+import styles from "./ChatPage.module.scss";
+//TODO css modules
+
 
 interface IMessage {
   text: string,
@@ -14,7 +17,6 @@ interface IMessage {
   owner_login: string,
   owner_name: string
 }
-
 
 export default function ChatPage() {
   const { isOpen, closeChatPage, chatName, chatId, chatType } = useChatPageStore((state) => state);
@@ -27,47 +29,42 @@ export default function ChatPage() {
     },
   });
 
-  const { data } = useSWR(["getMessages", login], async () => {
-    if (login.length) {
-      const { status, data } = await fetch(`/api/getMessages/?id=1`).then(res => res.json())
+  // const { data } = useSWR(["getMessages", login], async () => {
+  //   if (login.length) {
+  //     const { status, data } = await fetch(`/api/getMessages/?id=1`).then(res => res.json())
 
-      return data || [] as IMessage[]
-    }
-    return [] as IMessage[];
-  })
+  //     return data || [] as IMessage[]
+  //   }
+  //   return [] as IMessage[];
+  // })
 
   const [messages, setMessages] = React.useState<IMessage[]>([]);
 
   const messagesElement = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    //TODO: FIX THIS SHIT
-    setMessages(data)
-  }, [data]);
+  // React.useEffect(() => {
+  //TODO: FIX THIS SHIT
+  // setMessages(data)
+  // }, [data]);
   React.useEffect(() => {
     //scroll to bottom
-    if (messagesElement && messagesElement.current) {
-      messagesElement?.current.scrollTo(
-        0,
-        messagesElement.current.scrollHeight
-      );
+    const timeout = setTimeout(() => {
+      if (messagesElement && messagesElement.current) {
+        messagesElement?.current.scrollTo(
+          0,
+          messagesElement.current.scrollHeight
+        );
+      }
+    }, 50);
+    () => {
+      clearTimeout(timeout)
     }
   }, [messages])
 
-  const listenMessages = supabase
-    .channel('table-db-changes')
-    .on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'messages', filter: "chat_id=eq.1" },
-      async (payload) => {
-        setMessages([...messages, payload.new as IMessage])
-      }
-    )
-    .subscribe()
 
 
   React.useEffect(() => {
-    if (login.length) {
+    if (login.length && !messages.length) {
       fetch(`/api/getMessages/?id=1`).then(res => res.json())
         .then(({ status, data }) => {
           if (status === "success") {
@@ -77,6 +74,34 @@ export default function ChatPage() {
     }
 
   }, [login])
+  let socket: Socket;
+
+  React.useEffect(() => {
+    initSocket();
+    return () => {
+      if (socket) {
+        socket?.off("connect");
+        socket?.off("newMessage");
+        
+      }
+    };
+  }, [login])
+  async function initSocket() {
+    if (login.length) {
+      await fetch("/api/listenMessages/");
+      socket = io()
+      socket.on("connect", () => {
+        console.log("connected")
+      })
+
+      socket.on("newMessage", msg => {
+        console.log(msg)
+        console.log(messages)
+
+        setMessages((prev) => [...prev, msg])
+      })
+    }
+  }
 
   if (!login.length) {
     return null;
@@ -86,23 +111,23 @@ export default function ChatPage() {
       className={`chat_page ${isOpen ? "chat_page__open" : ""}`}
       {...handlers}
     >
-      <div className="chat_header">
+      <div className={styles.chat_header}>
         <button onClick={closeChatPage} className="link_button header_button">
           Chats
         </button>
-        <div className="chat_info">
-          <span className="chat_name">{chatName}</span>
-          <span className="last_online">{chatType === "user" ? "last seen a month ago" : ""}</span>
+        <div className={styles.chat_info}>
+          <span className={styles.chat_name}>{chatName}</span>
+          <span className={styles.last_online}>{chatType === "user" ? "last seen a month ago" : ""}</span>
         </div>
-        <img src="" alt="" className="chat_image" />
+        <img src="" alt="" className={styles.chat_image} />
       </div>
       <div className="chat_messages">
-        <div style={{ overflowY: "scroll" }} ref={messagesElement}>
+        <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
           {messages &&
             messages
               .map((message, i) => (
                 <Message
-                  key={i}
+                  key={`${message.text}_${message.time}`}
                   ownerId={message.owner_id}
                   ownerLogin={message.owner_login}
                   ownerName={message.owner_name}

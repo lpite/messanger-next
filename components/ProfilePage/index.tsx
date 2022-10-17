@@ -51,7 +51,7 @@ export default function ProfilePage() {
         </button>
       </div>
       <img src="/cat.jpg" alt="" className={styles.user_photo} />
-      <span className={styles.user_name}>Lpite</span>
+      <span className={styles.user_name}>{displayName}</span>
 
       <div className={styles.user_details}>
         <div className={styles.details_line}>
