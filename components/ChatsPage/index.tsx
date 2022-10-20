@@ -1,5 +1,4 @@
 import React from "react";
-import { io, Socket } from "socket.io-client";
 import useSWR from "swr";
 
 import { useProfilePageStore } from "../../store/profilePageStore";
