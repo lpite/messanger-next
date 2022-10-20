@@ -29,7 +29,6 @@ export default function ChatsPage() {
      
   })
 
-
   if (!login.length) {
     return null;
   }

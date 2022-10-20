@@ -17,7 +17,7 @@ export default function ChatItem({ chatId, chatName,chatType, lastMessageText, l
 
   return (
     <div className="chat_item" onClick={openChat}>
-      <img src="" alt="" className="chat_photo" />
+      <img src="/cat.jpg" alt="" className="chat_photo" />
       <div className="chat_details">
         <span className="chat_name">{chatName}</span>
         <br />

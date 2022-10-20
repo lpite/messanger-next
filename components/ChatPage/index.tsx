@@ -76,7 +76,7 @@ export default function ChatPage() {
           <span className={styles.chat_name}>{chatName}</span>
           <span className={styles.last_online}>{chatType === "user" ? "last seen a month ago" : ""}</span>
         </div>
-        <img src="" alt="" className={styles.chat_image} />
+        <img src="/cat.jpg" alt="" className={styles.chat_image} />
       </div>
       <div className="chat_messages">
         <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
