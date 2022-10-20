@@ -179,50 +179,6 @@ body,
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
-
-    .message {
-      max-width: 220px;
-      min-width: 100px;
-      margin: 5px 8px;
-      padding: 12px 8px;
-      display: flex;
-      flex-direction: column;
-      color: #e2e2e4;
-      font-size: 16px;
-
-      .message_details {
-        align-self: flex-end;
-      }
-      .message_time {
-        font-size: 9pt;
-        color: #717790;
-      }
-      .message_status {
-        font-size: 9pt;
-        margin-left: 5px;
-        width: 15px;
-        height: 8px;
-      }
-    }
-
-    .message_line {
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-
-      .message {
-        background-color: var(--gray-dark);
-        border-radius: 4px 18px 18px 18px;
-      }
-    }
-    .message_line--own {
-      justify-content: flex-end !important;
-
-      .message {
-        background-color: var(--bg-color);
-        border-radius: 18px 18px 4px 18px;
-      }
-    }
   }
 
   .new_message {

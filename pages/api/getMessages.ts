@@ -21,11 +21,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 		const chatId = req.query.id;
 
-		const query = `SELECT messages.text, messages.time,owner_id, users.login AS owner_login ,users.name AS owner_name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1 LIMIT 50`;
+		const query = `SELECT messages.text, messages.time,owner_id, users.login AS owner_login ,users.name AS owner_name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1 ORDER BY time DESC LIMIT 50`;
     
 		const values = [chatId];
 		const result = await conn.query(query, values);
-		res.send({ status: "success", data: result.rows })
+		res.send({ status: "success", data: result.rows?.reverse() })
 
 	} catch (error) {
 		console.error(error);

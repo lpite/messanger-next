@@ -1,12 +1,14 @@
 import React from "react";
 import { useSwipeable } from "react-swipeable";
-import { io, Socket } from "socket.io-client";
 import { useChatPageStore } from "../../store/chatPageStore";
 import { useProfilePageStore } from "../../store/profilePageStore";
 import Message from "./Message";
 import NewMessageForm from "./NewMessageForm";
 
 import styles from "./ChatPage.module.scss";
+import useSWR, { mutate } from "swr";
+import { supabase } from "../../lib/supaBase";
+import { log } from "console";
 //TODO css modules
 
 
@@ -29,83 +31,38 @@ export default function ChatPage() {
     },
   });
 
-  // const { data } = useSWR(["getMessages", login], async () => {
-  //   if (login.length) {
-  //     const { status, data } = await fetch(`/api/getMessages/?id=1`).then(res => res.json())
+  const { data } = useSWR<IMessage[]>(["getMessages", login], async () => {
+    if (login.length) {
+      const { status, data } = await fetch(`/api/getMessages/?id=1`).then(res => res.json())
 
-  //     return data || [] as IMessage[]
-  //   }
-  //   return [] as IMessage[];
-  // })
-
-  const [messages, setMessages] = React.useState<IMessage[]>([]);
+      return data 
+    }
+    return []
+  })
 
   const messagesElement = React.useRef<HTMLDivElement>(null);
 
-  // React.useEffect(() => {
-  //TODO: FIX THIS SHIT
-  // setMessages(data)
-  // }, [data]);
   React.useEffect(() => {
     //scroll to bottom
-    const timeout = setTimeout(() => {
       if (messagesElement && messagesElement.current) {
         messagesElement?.current.scrollTo(
           0,
           messagesElement.current.scrollHeight
         );
       }
-    }, 50);
-    () => {
-      clearTimeout(timeout)
-    }
-  }, [messages])
-
-
-
-  React.useEffect(() => {
-    if (login.length && !messages.length) {
-      fetch(`/api/getMessages/?id=1`).then(res => res.json())
-        .then(({ status, data }) => {
-          if (status === "success") {
-            setMessages(data)
-          }
-        })
-    }
-
-  }, [login])
-  let socket: Socket;
-
-  React.useEffect(() => {
-    initSocket();
-    return () => {
-      if (socket) {
-        socket?.off("connect");
-        socket?.off("newMessage");
-        
-      }
-    };
-  }, [login])
-  async function initSocket() {
-    if (login.length) {
-      await fetch("/api/listenMessages/");
-      socket = io()
-      socket.on("connect", () => {
-        console.log("connected")
-      })
-
-      socket.on("newMessage", msg => {
-        console.log(msg)
-        console.log(messages)
-
-        setMessages((prev) => [...prev, msg])
-      })
-    }
-  }
+  }, [data])
 
   if (!login.length) {
     return null;
   }
+
+  const listenMessages = supabase
+    .channel('schema-db-changes')
+    .on('postgres_changes', { event: "INSERT", schema: "public" }, payload => {
+      mutate(["getMessages", login])
+    })
+    .subscribe()
+
   return (
     <div
       className={`chat_page ${isOpen ? "chat_page__open" : ""}`}
@@ -123,8 +80,8 @@ export default function ChatPage() {
       </div>
       <div className="chat_messages">
         <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
-          {messages &&
-            messages
+          {data &&
+            data
               .map((message, i) => (
                 <Message
                   key={`${message.text}_${message.time}`}

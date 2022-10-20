@@ -1,5 +1,7 @@
 import { useProfilePageStore } from "../../store/profilePageStore";
 
+import styles from "./Message.module.scss";
+
 interface MessageProps {
   ownerId: string;
   ownerLogin: string;
@@ -25,15 +27,20 @@ export default function Message({
 
   return (
     <div
-      className={`message_line ${ownerId === id ? "message_line--own" : ""
-        }`}
+      className={ownerId === id ? styles["message_line--own"] : styles["message_line"]}
     >
-      <div className="message">
-        <span className="message_text">{text}</span>
-        <div className="message_details">
-          <span className="message_time" suppressHydrationWarning>{(new Date(parseInt(time))).toLocaleString()}</span>
-          {ownerName === "me" ? (
-            <img src="/messageStatus.svg" className="message_status" alt="" />
+      {ownerId === id ? null :
+        <img className={styles.owner_photo} src="/cat.jpg" alt="" />
+      }
+      <div className={styles.message}>
+        {ownerId === id ? null :
+          <span className={styles.message_owner_name}>{ownerName}</span>
+        }
+        <span className={styles.message_text}>{text}</span>
+        <div className={styles.message_details}>
+          <span className={styles.message_time} suppressHydrationWarning>{(new Date(parseInt(time))).toLocaleString()}</span>
+          {ownerId === id ? (
+            <img src="/messageStatus.svg" className={styles.message_status} alt="" />
           ) : (
             ""
           )}
