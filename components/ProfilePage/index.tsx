@@ -6,7 +6,7 @@ import styles from "./ProfilePage.module.scss";
 
 export default function ProfilePage() {
 
-  const { isOpen, closeProfilePage,id, displayName, login, setUser } =
+  const { isOpen, closeProfilePage, id, displayName, login, photo, setUser } =
     useProfilePageStore((store) => store);
   const { openSignInPage } = useSignInPageStore(store => store)
 
@@ -30,13 +30,12 @@ export default function ProfilePage() {
   }
 
   function logOut() {
-    setUser({id:"", displayName: "", login: "" });
+    setUser({ id: "", displayName: "", login: "", photo: "" });
     closeProfilePage();
     openSignInPage();
   }
 
  
-
   return (
     <div
       className={isOpen ? styles["profile_page--open"] : styles.profile_page}
@@ -50,7 +49,7 @@ export default function ProfilePage() {
           Chats
         </button>
       </div>
-      <img src="/cat.jpg" alt="" className={styles.user_photo} />
+      <img src={`/${photo}`} alt="" className={styles.user_photo} />
       <span className={styles.user_name}>{displayName}</span>
 
       <div className={styles.user_details}>

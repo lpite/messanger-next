@@ -3,7 +3,8 @@ import create from "zustand";
 interface User {
   id: string,
   login: string,
-  displayName: string
+  displayName: string,
+  photo:string
 }
 
 
@@ -12,6 +13,7 @@ interface ProfilePageStore {
   id: string,
   login: string;
   displayName: string;
+  photo:string,
   openProfilePage: () => void,
   closeProfilePage: () => void,
   setUser: (user: User) => void
@@ -22,6 +24,7 @@ export const useProfilePageStore = create<ProfilePageStore>((set) => ({
   id: "",
   login: "",
   displayName: "",
+  photo:"",
   openProfilePage: () =>
     set(() => ({
       isOpen: true,
@@ -33,6 +36,7 @@ export const useProfilePageStore = create<ProfilePageStore>((set) => ({
   setUser: (user) => set(() => ({
     id:user.id,
     login: user.login,
-    displayName: user.displayName
+    displayName: user.displayName,
+    photo:user.photo
   })),
 }));

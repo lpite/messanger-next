@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			throw new Error("wrong method!!");
 		}
 
-		const query = `SELECT text, time,users.name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1 ORDER BY time DESC LIMIT 1 `;
+		const query = `SELECT text, time, users.name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1 ORDER BY time DESC LIMIT 1 `;
     
 		const values = ["1"];
 		const result = await conn.query(query, values);
@@ -20,6 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 					chatId: "1",
 					chatName: "Test chat",
 					chatType: "group",
+					lastMessageOwnerName: result.rows[0]?.name,
 					lastMessageText: result.rows[0]?.text,
 					lastMessageTime: result.rows[0]?.time
 				}
