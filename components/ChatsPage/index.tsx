@@ -8,6 +8,7 @@ export interface IChat {
   chatId: string,
   chatName: string,
   chatType: string,
+  lastMessageOwnerName:string,
   lastMessageText: string,
   lastMessageTime: string
 }
@@ -53,6 +54,7 @@ export default function ChatsPage() {
                 chatId={chat.chatId}
                 chatName={chat.chatName}
                 chatType={chat.chatType}
+                lastMessageOwnerName={chat.lastMessageOwnerName}
                 lastMessageText={chat.lastMessageText}
                 lastMessageTime={chat.lastMessageTime}
               />
