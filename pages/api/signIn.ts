@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 
 import conn from "../../lib/db";
 
+import shortUUID from "short-uuid";
+import { create } from "domain";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -37,9 +39,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			login: result.rows[0].login,
 			photo:result.rows[0].photo
 		}
-		//just imitation
-		res.setHeader("set-cookie", `sessionId=${result.rows[0].id}; path=/; samesite=lax; httponly;`)
-		//
+
+		const sessionId = shortUUID.generate();
+		const time = Number(new Date()).toString();
+
+		const createSessionQuery = `INSERT INTO sessions(owner_id,session_id,time) VALUES($1,$2,$3)`;
+    
+		const createSessionValues = [result.rows[0].id,sessionId,time];
+		const createSessionResult = await conn.query(createSessionQuery, createSessionValues);
+
+		res.setHeader("set-cookie", `sessionId=${sessionId}; path=/; Max-Age=864000; SameSite=Strict; Secure; HttpOnly;`)
+
 		res.send({ status: "success", data: user })
 
 

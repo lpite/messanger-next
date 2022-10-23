@@ -29,13 +29,17 @@ export default function ProfilePage() {
     setEditData(false);
   }
 
-  function logOut() {
-    setUser({ id: "", displayName: "", login: "", photo: "" });
-    closeProfilePage();
-    openSignInPage();
-  }
-
- 
+  async function logOut() {
+    const { status } = await fetch("/api/logOut", { method: "POST" }).then(res => res.json());
+    if (status === "success") {
+      setUser({ id: "", displayName: "", login: "", photo: "" });
+      closeProfilePage();
+      openSignInPage();
+    
+    } else {
+      alert("error");
+    }
+  } 
   return (
     <div
       className={isOpen ? styles["profile_page--open"] : styles.profile_page}

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import checkUserSession from "../../lib/checkUserSession";
 import conn from "../../lib/db";
 /* 
 create table messages(
@@ -24,11 +25,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const text = body.text;
 		const time = Number(new Date()).toString();
 
+		const { data, error } = await checkUserSession(req);
+
+		if (error) {
+			throw new Error("No session");
+		}
 
 		const messageQuery = `INSERT INTO messages(owner_id,chat_id,text,time) VALUES($1,$2,$3,$4)`;    
-		const messageValues = [ownerSessionId, chatId, text,time];
+		const messageValues = [data?.owner_id, chatId, text, time];
 		const result = await conn.query(messageQuery, messageValues);
-
 		res.send({ status: "success" });
 	} catch (error) {
 		console.error(error);

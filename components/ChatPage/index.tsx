@@ -33,7 +33,7 @@ export default function ChatPage() {
 
   const { data } = useSWR<IMessage[]>(["getMessages", login], async () => {
     if (login.length) {
-      const { status, data } = await fetch(`/api/getMessages/?id=1`).then(res => res.json())
+      const { status, data } = await fetch(`/api/getMessages?id=1`).then(res => res.json())
 
       return data 
     }

@@ -5,8 +5,9 @@ import { useSignInPageStore } from "../../store/signInPageStore";
 import styles from "./LoginPage.module.scss";
 
 export default function LoginPage() {
-  const [errors, setErrors] = React.useState<string[]>([]);
 
+
+  const [errors, setErrors] = React.useState<string[]>([]);
   const [pageType, setPageType] = React.useState<"signUp" | "signIn">("signIn");
 
   const [userData, setUserData] = React.useState({
@@ -17,6 +18,28 @@ export default function LoginPage() {
 
   const { setUser } = useProfilePageStore((state) => state);
   const { isOpen, closeSignInPage } = useSignInPageStore((state) => state);
+
+  React.useEffect(() => {
+    fetchUser().then(({ status, data }) => {
+      if (status !== "error" && Object.keys(data).length) {
+        setUser(data)
+        closeSignInPage();
+
+      }
+    })
+  }, [])
+
+  async function fetchUser() {
+    const { status, data } = await fetch("http://localhost:3000/api/me/").then(res => res.json())
+      .catch((error) => {
+      
+      })
+    return {
+      status,
+      data
+    }
+  }
+
 
   async function signUpUser(e: React.FormEvent) {
     e.preventDefault();
