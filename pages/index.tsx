@@ -18,19 +18,19 @@ export default function Index() {
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { status, data } = await fetch("http://localhost:3000/api/me/", {
-    headers: {
-      "Cookie": `sessionId=${req.cookies["sessionId"]}`
-    }
-  }).then(res => res.json())
-    .catch((error) => {
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   const { status, data } = await fetch("http://localhost:3000/api/me/", {
+//     headers: {
+//       "Cookie": `sessionId=${req.cookies["sessionId"]}`
+//     }
+//   }).then(res => res.json())
+//     .catch((error) => {
       
-    })
-  return {
-    props: {
+//     })
+//   return {
+//     props: {
     
-    },
-  }
-}
+//     },
+//   }
+// }
 
