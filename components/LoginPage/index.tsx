@@ -30,7 +30,7 @@ export default function LoginPage() {
   }, [])
 
   async function fetchUser() {
-    const { status, data } = await fetch("http://localhost:3000/api/me/").then(res => res.json())
+    const { status, data } = await fetch("/api/me/").then(res => res.json())
       .catch((error) => {
       
       })
