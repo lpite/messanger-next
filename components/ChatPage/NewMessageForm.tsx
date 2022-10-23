@@ -1,5 +1,6 @@
 import React from "react"
 
+import styles from "./NewMessageForm.module.scss"
 
 export default function NewMessageForm() {
 	const [messageText, setMessageText] = React.useState("");
@@ -25,9 +26,9 @@ export default function NewMessageForm() {
 	}
 
 	return (
-		<form onSubmit={sendMessage} action="" className="new_message" >
-			<input onChange={onTextChange} value={messageText} type="text" className="new_message__input" />
-			<button className="new_message__button">s</button>
+		<form onSubmit={sendMessage} action="" className={styles["new_message"]} >
+			<input onChange={onTextChange} value={messageText} type="text" className={styles["new_message__input"]} />
+			<button className={styles["new_message__button"]}>send</button>
 		</form>
 	)
 }

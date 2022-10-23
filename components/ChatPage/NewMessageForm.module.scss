@@ -1,0 +1,26 @@
+.new_message {
+    height: 40px;
+    width: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    align-items: center;
+  }
+
+  .new_message__input {
+    height: 25px;
+    padding: 2px;
+    color: white;
+    flex: 1;
+    font-size: 16px;
+    background-color: var(--bg-color-light);
+    border: none;
+    margin: 0 5px;
+  }
+  .new_message__button {
+    height: 29px;
+    width: 39px;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 8px;
+    margin: 0 5px;
+  }

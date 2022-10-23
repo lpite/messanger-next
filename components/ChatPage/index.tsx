@@ -8,7 +8,6 @@ import NewMessageForm from "./NewMessageForm";
 import styles from "./ChatPage.module.scss";
 import useSWR, { mutate } from "swr";
 import { supabase } from "../../lib/supaBase";
-import { log } from "console";
 //TODO css modules
 
 
@@ -44,12 +43,12 @@ export default function ChatPage() {
 
   React.useEffect(() => {
     //scroll to bottom
-      if (messagesElement && messagesElement.current) {
-        messagesElement?.current.scrollTo(
-          0,
-          messagesElement.current.scrollHeight
-        );
-      }
+    if (messagesElement && messagesElement.current) {
+      messagesElement?.current.scrollTo(
+        0,
+        messagesElement.current.scrollHeight
+      );
+    }
   }, [data])
 
   if (!login.length) {
@@ -65,7 +64,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className={`chat_page ${isOpen ? "chat_page__open" : ""}`}
+      className={isOpen ? styles["chat_page--open"] : styles["chat_page"]}
       {...handlers}
     >
       <div className={styles.chat_header}>
@@ -78,7 +77,7 @@ export default function ChatPage() {
         </div>
         <img src="/cat.jpg" alt="" className={styles.chat_image} />
       </div>
-      <div className="chat_messages">
+      <div className={styles["chat_messages"]}>
         <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
           {data &&
             data

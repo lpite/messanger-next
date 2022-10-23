@@ -38,7 +38,7 @@ export default function Message({
         }
         <span className={styles.message_text}>{text}</span>
         <div className={styles.message_details}>
-          <span className={styles.message_time} suppressHydrationWarning>{(new Date(parseInt(time))).toLocaleString()}</span>
+          <span className={styles.message_time} suppressHydrationWarning>{(new Date(parseInt(time))).toLocaleTimeString()}</span>
           {ownerId === id ? (
             <img src="/messageStatus.svg" className={styles.message_status} alt="" />
           ) : (
