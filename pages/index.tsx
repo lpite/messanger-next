@@ -1,10 +1,11 @@
-import { GetServerSideProps, InferGetServerSidePropsType, } from "next";
 import React from "react";
-import ChatPage from "../components/ChatPage";
+import dynamic from "next/dynamic";
+
 import ChatsPage from "../components/ChatsPage";
 import LoginPage from "../components/LoginPage";
-import ProfilePage from "../components/ProfilePage";
 
+const ProfilePage = dynamic(() => import("../components/ProfilePage"), { ssr: false })
+const ChatPage = dynamic(() => import("../components/ChatPage"), { ssr: false })
 
 
 export default function Index() {

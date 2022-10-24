@@ -1,4 +1,4 @@
-import { useProfilePageStore } from "../../store/profilePageStore";
+import { useProfilePageStore } from "../../../store/profilePageStore";
 
 import styles from "./Message.module.scss";
 

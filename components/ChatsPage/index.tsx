@@ -2,20 +2,18 @@ import React from "react";
 import useSWR from "swr";
 
 import { useProfilePageStore } from "../../store/profilePageStore";
-import ChatItem from "./ChatItem";
+import ChatItem from "./ChatItem/ChatItem";
 
 export interface IChat {
   chatId: string,
   chatName: string,
   chatType: string,
-  lastMessageOwnerName:string,
+  lastMessageOwnerName: string,
   lastMessageText: string,
   lastMessageTime: string
 }
 
 export default function ChatsPage() {
-
-
 
   const { openProfilePage, login } = useProfilePageStore((state) => state);
 

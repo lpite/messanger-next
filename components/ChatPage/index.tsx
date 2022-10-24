@@ -2,13 +2,12 @@ import React from "react";
 import { useSwipeable } from "react-swipeable";
 import { useChatPageStore } from "../../store/chatPageStore";
 import { useProfilePageStore } from "../../store/profilePageStore";
-import Message from "./Message";
-import NewMessageForm from "./NewMessageForm";
+import Message from "./Message/Message";
+import NewMessageForm from "./NewMessageForm/NewMessageForm";
 
 import styles from "./ChatPage.module.scss";
 import useSWR, { mutate } from "swr";
 import { supabase } from "../../lib/supaBase";
-//TODO css modules
 
 
 interface IMessage {
