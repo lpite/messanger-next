@@ -5,7 +5,7 @@ import ChatsPage from "../components/ChatsPage";
 import LoginPage from "../components/LoginPage";
 
 const ProfilePage = dynamic(() => import("../components/ProfilePage"), { ssr: false })
-const ChatPage = dynamic(() => import("../components/ChatPage"), { ssr: false })
+const ChatPage = dynamic(() => import("../components/ChatPage"), { ssr: false})
 
 
 export default function Index() {
@@ -14,8 +14,8 @@ export default function Index() {
     <>
       <LoginPage />
       <ChatsPage />
-      <ChatPage />
-      <ProfilePage />;
+        <ChatPage />
+        <ProfilePage />;
     </>
   );
 }

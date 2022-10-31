@@ -6,7 +6,7 @@ import Message from "./Message/Message";
 import NewMessageForm from "./NewMessageForm/NewMessageForm";
 
 import styles from "./ChatPage.module.scss";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { supabase } from "../../lib/supaBase";
 
 
@@ -29,9 +29,9 @@ export default function ChatPage() {
     },
   });
 
-  const { data } = useSWR<IMessage[]>(["getMessages", login], async () => {
+  const { data, mutate } = useSWR<IMessage[]>(["getMessages", login], async () => {
     if (login.length) {
-      const { status, data } = await fetch(`/api/getMessages?id=1`).then(res => res.json())
+      const { status, data } = await fetch(`/api/getMessages?chatId=1`).then(res => res.json())
 
       return data 
     }
@@ -56,8 +56,13 @@ export default function ChatPage() {
 
   const listenMessages = supabase
     .channel('schema-db-changes')
-    .on('postgres_changes', { event: "INSERT", schema: "public" }, payload => {
-      mutate(["getMessages", login])
+    .on('postgres_changes', { event: "INSERT", schema: "public" }, async (payload: any) => {
+      mutate(async (currentData) => {
+        const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
+        return [...currentData || [], data[0]]
+      }, {
+        revalidate: false
+      })
     })
     .subscribe()
 

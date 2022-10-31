@@ -2,6 +2,7 @@ import React from "react";
 import { useSwipeable } from "react-swipeable";
 import { useProfilePageStore } from "../../store/profilePageStore";
 import { useSignInPageStore } from "../../store/signInPageStore";
+import Popup from "./Popup/Popup";
 import styles from "./ProfilePage.module.scss";
 
 export default function ProfilePage() {
@@ -12,17 +13,23 @@ export default function ProfilePage() {
 
   const [editData, setEditData] = React.useState(false);
 
-  const handlers = useSwipeable({
+  const handlersForPage = useSwipeable({
     onSwipedRight: () => {
       //close profile on right swipe
       closeProfilePage();
     },
   });
+
+ 
+
   if (!login.length) {
     return null;
   }
   function enableEditing() {
     setEditData(true);
+  }
+  function disableEditing() {
+    setEditData(false);
   }
 
   function saveData() {
@@ -41,46 +48,49 @@ export default function ProfilePage() {
     }
   } 
   return (
-    <div
-      className={isOpen ? styles["profile_page--open"] : styles.profile_page}
-      {...handlers}
-    >
-      <div className={styles.header}>
-        <button
-          onClick={closeProfilePage}
-          className="link_button header_button"
-        >
-          Chats
-        </button>
-      </div>
-      <img src={`/${photo}`} alt="" className={styles.user_photo} />
-      <span className={styles.user_name}>{displayName}</span>
+    <>
+      <Popup editData={editData} disableEditing={disableEditing} saveData={saveData} />
+      <div
+        className={isOpen ? styles["profile_page--open"] : styles.profile_page}
+        {...handlersForPage}
+      >
+   
+        <div className={styles.header}>
+          <button
+            onClick={closeProfilePage}
+            className="link_button header_button"
+          >
+            Chats
+          </button>
+        </div>
+        <img src={`/${photo}`} alt="" className={styles.user_photo} />
+        <span className={styles.user_name}>{displayName}</span>
 
-      <div className={styles.user_details}>
-        <div className={styles.details_line}>
-          <span className={styles.field_name}>User ID</span>
-          <span className={styles.field_data}>
-            {id}
-          </span>
+        <div className={styles.user_details}>
+          <div className={styles.details_line}>
+            <span className={styles.field_name}>User ID</span>
+            <span className={styles.field_data}>
+              {id}
+            </span>
+          </div>
+          <hr />
+          <div className={styles.details_line}>
+            <span className={styles.field_name}>Login</span>
+      
+            <span className={styles.field_data}>
+              {login}
+            </span>
+       
+          </div>
+          <hr />
+          <div className={styles.details_line}>
+            <span className={styles.field_name}>Display name</span>
+            <span className={styles.field_data}>
+              {displayName}
+            </span>
+          </div>
         </div>
-        <hr />
-        <div className={styles.details_line}>
-          <span className={styles.field_name}>Login</span>
-          <span className={styles.field_data}>
-            {login}
-          </span>
-        </div>
-        <hr />
-        <div className={styles.details_line}>
-          <span className={styles.field_name}>Display name</span>
-          <span className={styles.field_data}>{displayName}</span>
-        </div>
-      </div>
-      {editData ? (
-        <button className="button big_button" onClick={saveData}>
-          Save
-        </button>
-      ) : (
+        
         <div className={styles.user_details}>
           <div className={styles.details_line}>
             <button className="link_button" onClick={enableEditing}>
@@ -98,7 +108,8 @@ export default function ProfilePage() {
             </button>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+
+    </>
   );
 }

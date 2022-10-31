@@ -54,15 +54,17 @@
 }
 
 .details_line {
-  margin: 10px 5px;
+  margin: 5px;
+  height: 25px;
   display: flex;
   justify-content: space-between;
 
-  .field_name {
-    color: var(--gray);
-  }
-
-  .field_data {
-    color: white;
-  }
 }
+.field_name {
+    color: var(--gray);
+}
+
+.field_data {
+  color: white;
+}
+
