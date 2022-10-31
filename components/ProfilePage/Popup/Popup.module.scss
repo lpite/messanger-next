@@ -3,15 +3,16 @@
   width: 100%;
   position:fixed;
   transform: translateY(100%);
-  transition: 0.2s ease-in-out;
+  transition: 0.4s ease-in-out;
   z-index: 2;
-
 }
+
 .profile_page__popup--open{
  @extend .profile_page__popup;
   transform: translateY(-100%);
-  transition: 0.2s ease-in-out;
+  transition: 0.4s ease-in-out;
 }
+
 .popup_body{
   height: 100%;
   width: 100%;
@@ -20,8 +21,6 @@
   align-items:center;
   flex-direction: column;
   border-radius:8px 8px 0 0;
-  
-
 }
 
 .popup__close_button{
