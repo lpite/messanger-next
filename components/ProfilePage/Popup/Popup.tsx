@@ -18,7 +18,7 @@ export default function Popup({ editData, disableEditing, saveData }: PopupProps
 	const { displayName, login, photo } =
 		useProfilePageStore((store) => store);
 
-	const [selectedPhoto, setSelectedPhoto] = React.useState(photo || photos[0]);
+	const [selectedPhoto, setSelectedPhoto] = React.useState(photo);
 
 	const handlersForPopUp = useSwipeable({
 		onSwipedDown: () => {

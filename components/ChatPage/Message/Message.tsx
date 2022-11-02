@@ -6,6 +6,7 @@ interface MessageProps {
   ownerId: string;
   ownerLogin: string;
   ownerName: string;
+  ownerPhoto: string;
   text: string;
   time: string;
   status: string;
@@ -15,6 +16,7 @@ export default function Message({
   ownerId,
   ownerLogin,
   ownerName,
+  ownerPhoto,
   text,
   time,
   status,
@@ -30,7 +32,7 @@ export default function Message({
       className={ownerId === id ? styles["message_line--own"] : styles["message_line"]}
     >
       {ownerId === id ? null :
-        <img className={styles.owner_photo} src="/cat.jpg" alt="" />
+        <img className={styles.owner_photo} src={`/${ownerPhoto}`} alt="" />
       }
       <div className={styles.message}>
         {ownerId === id ? null :

@@ -20,6 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 					chatId: "1",
 					chatName: "Test chat",
 					chatType: "group",
+					chatPhoto:"cat4.jpg",
 					lastMessageOwnerName: result.rows[0]?.name,
 					lastMessageText: result.rows[0]?.text,
 					lastMessageTime: result.rows[0]?.time

@@ -10,7 +10,7 @@
 .profile_page__popup--open{
  @extend .profile_page__popup;
   transform: translateY(-100%);
-  transition: 0.4s ease-in-out;
+  transition: 0.2s ease-out;
 }
 
 .popup_body{
@@ -91,11 +91,20 @@
 }
 
 .input{
-  height: 30px;
-  margin: 5px 10px;
+  height: 33px;
+  width: 256px;
+  background-color: var(--bg-color-light);
+  border: none;
   outline: none;
-  border:none;
-  border-radius:8px;
-  background-color:var(--bg-color-light);
+  border-radius: 8px;
+  font-size: 13pt;
+  font-weight: 500;
+  color: white;
+  margin: 5px 0;
+  padding:0 5px;
+}
+.input:disabled{
+  color: gray;
+
 }
 

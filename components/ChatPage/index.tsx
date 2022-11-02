@@ -15,11 +15,12 @@ interface IMessage {
   time: string,
   owner_id: string,
   owner_login: string,
-  owner_name: string
+  owner_name: string,
+  owner_photo: string
 }
 
 export default function ChatPage() {
-  const { isOpen, closeChatPage, chatName, chatId, chatType } = useChatPageStore((state) => state);
+  const { isOpen, closeChatPage, chatName, chatId, chatType, chatPhoto } = useChatPageStore((state) => state);
   const { login } = useProfilePageStore(state => state)
 
   const handlers = useSwipeable({
@@ -79,7 +80,7 @@ export default function ChatPage() {
           <span className={styles.chat_name}>{chatName}</span>
           <span className={styles.last_online}>{chatType === "user" ? "last seen a month ago" : ""}</span>
         </div>
-        <img src="/cat.jpg" alt="" className={styles.chat_image} />
+        <img src={`/${chatPhoto}`} alt="" className={styles.chat_image} />
       </div>
       <div className={styles["chat_messages"]}>
         <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
@@ -91,6 +92,7 @@ export default function ChatPage() {
                   ownerId={message.owner_id}
                   ownerLogin={message.owner_login}
                   ownerName={message.owner_name}
+                  ownerPhoto={message.owner_photo}
                   text={message.text}
                   time={message.time}
                   status="sent"

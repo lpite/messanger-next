@@ -7,18 +7,21 @@ export default function NewMessageForm() {
 
 	function sendMessage(e: React.FormEvent) {
 		e.preventDefault();
-		setMessageText("");
-		fetch("/api/sendMessage", {
-			method: "POST",
-			body: JSON.stringify({ chatId: "1", text: messageText })
-		}).then(res => res.json())
-			.then(({ status }) => {
-				if (status !== "success") {
-					alert("smth wrong");
-				}
-			}).catch(() => {
-				alert("smth wrong")
-			})
+		if (messageText.length) {
+			setMessageText("");
+			fetch("/api/sendMessage", {
+				method: "POST",
+				body: JSON.stringify({ chatId: "1", text: messageText })
+			}).then(res => res.json())
+				.then(({ status }) => {
+					if (status !== "success") {
+						alert("smth wrong");
+					}
+				}).catch(() => {
+					alert("smth wrong")
+				})
+		}
+		
 	}
 
 	function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
