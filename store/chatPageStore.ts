@@ -1,4 +1,5 @@
 import create from 'zustand'
+import { IMessage } from '../components/ChatPage'
 
 
 
@@ -8,9 +9,12 @@ interface ChatPageStore {
     chatName: string,
     chatType: string,
     chatPhoto: string,
+    messages: IMessage[],
     openChatPage: () => void,
     closeChatPage: () => void,
     setChatPageInfo: (info: SetChatPageInfo) => void
+    setMessages: (messages: IMessage[]) => void
+
 }
 
 interface OpenChatParams {
@@ -30,6 +34,7 @@ export const useChatPageStore = create<ChatPageStore>((set) => ({
     chatName: "",
     chatType: "",
     chatPhoto: "",
+    messages: [],
     openChatPage: () => set(() => ({  
         isOpen: true,
     })),
@@ -41,5 +46,9 @@ export const useChatPageStore = create<ChatPageStore>((set) => ({
         chatName: chatName,
         chatType: chatType,
         chatPhoto: chatPhoto
+    })),
+    setMessages: (messages) => set(() => ({
+        messages: messages
     }))
+
 }))

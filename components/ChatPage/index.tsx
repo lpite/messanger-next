@@ -10,7 +10,7 @@ import useSWR from "swr";
 import { supabase } from "../../lib/supaBase";
 
 
-interface IMessage {
+export interface IMessage {
   text: string,
   time: string,
   owner_id: number,
@@ -20,7 +20,7 @@ interface IMessage {
 }
 
 export default function ChatPage() {
-  const { isOpen, closeChatPage, chatName, chatId, chatType, chatPhoto } = useChatPageStore((state) => state);
+  const { isOpen, closeChatPage, chatName, chatId, chatType, chatPhoto, messages, setMessages } = useChatPageStore((state) => state);
   const { login } = useProfilePageStore(state => state)
 
   const handlers = useSwipeable({
@@ -38,6 +38,9 @@ export default function ChatPage() {
     }
     return []
   })
+  React.useEffect(() => {
+    setMessages(data || [])
+  }, [data])
 
   const messagesElement = React.useRef<HTMLDivElement>(null);
 
@@ -49,7 +52,7 @@ export default function ChatPage() {
         messagesElement.current.scrollHeight
       );
     }
-  }, [data])
+  }, [messages])
 
   if (!login.length) {
     return null;
@@ -59,12 +62,9 @@ export default function ChatPage() {
     .channel('schema-db-changes')
     .on('postgres_changes', { event: "INSERT", schema: "public", }, async (payload: any) => {
       console.log(payload);
-      mutate(async (currentData) => {
-        const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
-        return [...currentData || [], data[0]]
-      }, {
-        revalidate: false
-      })
+      const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
+      console.log(data)
+      setMessages([...messages, data[0]])
     })
     .subscribe()
 
@@ -85,8 +85,8 @@ export default function ChatPage() {
       </div>
       <div className={styles["chat_messages"]}>
         <div style={{ overflowY: "scroll", scrollBehavior: "smooth" }} ref={messagesElement}>
-          {data &&
-            data
+          {messages &&
+            messages
               .map((message, i) => (
                 <Message
                   key={`${message.text}_${message.time}`}

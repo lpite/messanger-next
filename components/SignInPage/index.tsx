@@ -2,9 +2,9 @@ import React from "react";
 import { useProfilePageStore } from "../../store/profilePageStore";
 import { useSignInPageStore } from "../../store/signInPageStore";
 
-import styles from "./LoginPage.module.scss";
+import styles from "./SignInPage.module.scss";
 
-export default function LoginPage() {
+export default function SignInPage() {
 
 
   const [errors, setErrors] = React.useState<string[]>([]);
@@ -18,16 +18,6 @@ export default function LoginPage() {
 
   const { setUser } = useProfilePageStore((state) => state);
   const { isOpen, closeSignInPage } = useSignInPageStore((state) => state);
-
-  // React.useEffect(() => {
-  //   fetchUser().then(({ status, data }) => {
-  //     if (status !== "error" && Object.keys(data).length) {
-  //       setUser(data)
-  //       closeSignInPage();
-
-  //     }
-  //   })
-  // }, [])
 
   async function fetchUser() {
     const { status, data } = await fetch("/api/me/").then(res => res.json())
@@ -51,6 +41,7 @@ export default function LoginPage() {
 
     if (status === "success") {
       alert("Success now you can sign in");
+      setPageType("signIn");
     } else {
       setErrors(["smth wrong"])
     }
@@ -74,28 +65,28 @@ export default function LoginPage() {
   function onChangeLogin({ target }: React.ChangeEvent<HTMLInputElement>) {
     setUserData({ ...userData, login: target.value });
 
-    if (!target.value.length && errors.length) {
-      setErrors(["Enter your email"]);
+    if (target.value.length < 3) {
+      setErrors([...errors,"Enter your login"]);
     } else {
-      setErrors([]);
+      setErrors([...errors.filter(el => el !== "Enter your login")]);
     }
   }
 
   function onChangeName({ target }: React.ChangeEvent<HTMLInputElement>) {
     setUserData({ ...userData, displayName: target.value });
 
-    if (!target.value.length && errors.length) {
-      setErrors(["Enter your name"]);
+    if (!target.value.length) {
+      setErrors([...errors,"Enter your name"]);
     } else {
-      setErrors([]);
+      setErrors([...errors.filter(el => el !== "Enter your name")]);
     }
   }
 
   function onChangePassword({ target }: React.ChangeEvent<HTMLInputElement>) {
     setUserData({ ...userData, password: target.value });
 
-    if (!target.value.length && errors.length) {
-      setErrors(["Enter your password"]);
+    if (target.value.length < 8) {
+      setErrors([...errors, "Enter your password"]);
     } else {
       setErrors([]);
     }
