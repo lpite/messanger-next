@@ -1,7 +1,7 @@
 import create from "zustand";
 
 interface User {
-  id: string,
+  id: number,
   login: string,
   displayName: string,
   photo:string
@@ -10,7 +10,7 @@ interface User {
 
 interface ProfilePageStore {
   isOpen: boolean;
-  id: string,
+  id: number,
   login: string;
   displayName: string;
   photo:string,
@@ -21,7 +21,7 @@ interface ProfilePageStore {
 
 export const useProfilePageStore = create<ProfilePageStore>((set) => ({
   isOpen: false,
-  id: "",
+  id: 0,
   login: "",
   displayName: "",
   photo:"",

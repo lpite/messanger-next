@@ -11,7 +11,7 @@ export default function NewMessageForm() {
 			setMessageText("");
 			fetch("/api/sendMessage", {
 				method: "POST",
-				body: JSON.stringify({ chatId: "1", text: messageText })
+				body: JSON.stringify({ chatId: 1, text: messageText })
 			}).then(res => res.json())
 				.then(({ status }) => {
 					if (status !== "success") {

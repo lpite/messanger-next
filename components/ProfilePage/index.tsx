@@ -39,7 +39,7 @@ export default function ProfilePage() {
   async function logOut() {
     const { status } = await fetch("/api/logOut", { method: "POST" }).then(res => res.json());
     if (status === "success") {
-      setUser({ id: "", displayName: "", login: "", photo: "" });
+      setUser({ id: 0, displayName: "", login: "", photo: "" });
       closeProfilePage();
       openSignInPage();
     

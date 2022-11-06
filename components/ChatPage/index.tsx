@@ -13,7 +13,7 @@ import { supabase } from "../../lib/supaBase";
 interface IMessage {
   text: string,
   time: string,
-  owner_id: string,
+  owner_id: number,
   owner_login: string,
   owner_name: string,
   owner_photo: string
@@ -57,7 +57,8 @@ export default function ChatPage() {
 
   const listenMessages = supabase
     .channel('schema-db-changes')
-    .on('postgres_changes', { event: "INSERT", schema: "public" }, async (payload: any) => {
+    .on('postgres_changes', { event: "INSERT", schema: "public", }, async (payload: any) => {
+      console.log(payload);
       mutate(async (currentData) => {
         const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
         return [...currentData || [], data[0]]

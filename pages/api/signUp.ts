@@ -1,17 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import conn from "../../lib/db";
 import bcrypt from "bcryptjs";
 
-/*
-  db scheme
-  ------------------------
-  id serial PRIMARY key
-  login varchar(50)
-  dispayName varchar(50)
-  password varchar(60)
-
-*/
-
+import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -23,7 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const login = body.login;
     const displayName = body.displayName;
     const password = body.password;
-
     if (!login.length || login.length > 50 || 
       !displayName.length || displayName.length > 50 
       || password.length < 8) {
@@ -33,11 +22,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const passwordHash = bcrypt.hashSync(password,1);
+   
+    const createdUser = await prisma.user.create({
+      data:{
+        login:login,
+        display_name:displayName,
+        password:passwordHash
+      }
+    })
 
-    const query = `INSERT INTO users(login,name,password) VALUES($1,$2,$3)`;
-    
-    const values = [login,displayName,passwordHash];
-    const result = await conn.query(query, values);
     res.send({ status: "success" });
 
   } catch (error) {

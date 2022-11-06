@@ -3,7 +3,7 @@ import { useProfilePageStore } from "../../../store/profilePageStore";
 import styles from "./Message.module.scss";
 
 interface MessageProps {
-  ownerId: string;
+  ownerId: number;
   ownerLogin: string;
   ownerName: string;
   ownerPhoto: string;

@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Message {
+  id       Int     @id @default(autoincrement())
+  owner_id Int
+  chat_id  Int
+  text     String?
+  time     String? @db.VarChar(13)
+  author   User    @relation("messages_owner_idTousers", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_owner_id")
+}
+
+model Session {
+  id         Int     @id @default(autoincrement())
+  owner_id   Int
+  session_id String? @unique @db.VarChar(30)
+  time       String? @db.VarChar(13)
+  user       User    @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_owner_id")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  login        String?   @unique @db.VarChar(50)
+  display_name String?   @db.VarChar(50)
+  password     String?   @db.VarChar(65)
+  photo        String?   @default("cat.jpg") @db.VarChar(20)
+  messages     Message[] @relation("messages_owner_idTousers")
+  Session      Session[]
+}

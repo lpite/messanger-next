@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import checkUserSession from "../../lib/checkUserSession";
 
-import conn from "../../lib/db";
+
+import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -13,11 +14,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		if (error) {
 			throw new Error(error)
 		}
-		const query = `SELECT users.id, users.login, users.name, users.photo FROM users WHERE id = $1`;
-    
-		const values = [data?.owner_id];
-		const result = await conn.query(query, values);
-		res.send({ status: "success", data: { ...result.rows[0], displayName: result.rows[0].name } });
+
+		const user = await prisma.user.findUnique({
+			where:{
+				id:data?.owner_id
+			},
+			select:{
+				id:true,
+				display_name:true,
+				login:true,
+				photo:true
+			}
+		})
+		res.send({ status: "success", data: user });
 	} catch (error) {
 		console.error(error);
 		res.send({ status: "error" })

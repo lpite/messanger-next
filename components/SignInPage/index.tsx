@@ -19,15 +19,15 @@ export default function LoginPage() {
   const { setUser } = useProfilePageStore((state) => state);
   const { isOpen, closeSignInPage } = useSignInPageStore((state) => state);
 
-  React.useEffect(() => {
-    fetchUser().then(({ status, data }) => {
-      if (status !== "error" && Object.keys(data).length) {
-        setUser(data)
-        closeSignInPage();
+  // React.useEffect(() => {
+  //   fetchUser().then(({ status, data }) => {
+  //     if (status !== "error" && Object.keys(data).length) {
+  //       setUser(data)
+  //       closeSignInPage();
 
-      }
-    })
-  }, [])
+  //     }
+  //   })
+  // }, [])
 
   async function fetchUser() {
     const { status, data } = await fetch("/api/me/").then(res => res.json())

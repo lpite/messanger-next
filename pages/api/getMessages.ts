@@ -1,44 +1,44 @@
-/*
-	create table messages(
-		id serial PRIMARY key,
-		owner_id int NOT null,
-		chat_id int NOT null,
-		CONSTRAINT fk_owner_id FOREIGN KEY (owner_id) REFERENCES users (id),
-		text TEXT,
-		time varchar(13)
-	)
-
-*/
-
 import { NextApiRequest, NextApiResponse } from "next";
 
-import conn from "../../lib/db";
+import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		if (req.method !== "GET") {
 			throw new Error("wrong method!!");
 		}
-		const chatId = req.query.chatId;
-		const messageId = req.query.messageId;
+		const chatId = parseInt(req.query.chatId?.toString() || "");
+		const messageId = parseInt(req.query.messageId?.toString() || "");
 
-		const query = `SELECT 
-			messages.text, 
-			messages.time,
-			owner_id, 
-			users.login AS owner_login,
-			users.name AS owner_name,
-			users.photo AS owner_photo 
-		FROM messages 
-		LEFT JOIN users ON users.id = messages.owner_id 
-		WHERE chat_id = $1 ${messageId?.length ? "AND messages.id = $2" : ""} ORDER BY time DESC LIMIT ${messageId?.length ? "1" : "50"}`;
-    	
-		const values = [chatId];
-		if(messageId?.length){
-			values.push(messageId)
+		const filters: { [key: string]: string | number } = {
+			chat_id: chatId
 		}
-		const result = await conn.query(query, values);
-		res.send({ status: "success", data: result.rows?.reverse() })
+		if (!isNaN(messageId)) {
+			filters["id"] = messageId
+		}
+
+		const messages = await prisma.message.findMany({
+			where: filters,
+			include: {
+				author: true
+			},
+			take: !isNaN(messageId) ? 1 : 50
+
+		})
+
+		const formatedMessages = messages.map((message) => {
+			return {
+				text: message.text,
+				time: message.time,
+				owner_id: message.owner_id,
+				owner_login: message.author.login,
+				owner_name: message.author.display_name,
+				owner_photo: message.author.photo,
+
+			}
+		})
+
+		res.send({ status: "success", data: formatedMessages })
 
 	} catch (error) {
 		console.error(error);

@@ -2,17 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import bcrypt from "bcryptjs";
 
-import conn from "../../lib/db";
-
 import shortUUID from "short-uuid";
-import { create } from "domain";
+
+import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		if (req.method !== "POST") {
 			throw new Error("wrong method!");
 		}
-		console.log(req.body)
 		const body = JSON.parse(req.body) 
 
 		const login = body.login;
@@ -24,33 +22,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     
 		}
 
-		const query = `SELECT * FROM users WHERE login = $1`;
-    
-		const values = [login];
-		const result = await conn.query(query, values);
+		const user = await prisma.user.findUnique({
+			where: {
+				login: login,
+			}
+		})
 
-		if (!bcrypt.compareSync(password, result.rows[0].password)) {
+		if (!user) {
+			throw new Error("no user")
+		}  
+
+		if (!bcrypt.compareSync(password, user?.password || "")) {
 			throw new Error("wrong password");
 		}
 		
-		const user = {
-			id: result.rows[0].id,
-			displayName: result.rows[0].name,
-			login: result.rows[0].login,
-			photo:result.rows[0].photo
+		const response = {
+			id: user?.id,
+			displayName: user?.display_name,
+			login: user?.login,
+			photo: user?.photo
 		}
 
-		const sessionId = shortUUID.generate();
+		const sessionId = shortUUID.generate().toString();
 		const time = Number(new Date()).toString();
 
-		const createSessionQuery = `INSERT INTO sessions(owner_id,session_id,time) VALUES($1,$2,$3)`;
-    
-		const createSessionValues = [result.rows[0].id,sessionId,time];
-		const createSessionResult = await conn.query(createSessionQuery, createSessionValues);
+		const createSession = await prisma.session.create({
+			data: {
+				owner_id: user?.id,
+				session_id: sessionId,
+				time: time,
+			}
+		})
 
 		res.setHeader("set-cookie", `sessionId=${sessionId}; path=/; Max-Age=864000; SameSite=Strict; Secure; HttpOnly;`)
 
-		res.send({ status: "success", data: user })
+		res.send({ status: "success", data: response })
 
 
 	} catch (error) {

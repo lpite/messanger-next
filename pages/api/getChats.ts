@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import conn from "../../lib/db";
 
+import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
@@ -9,10 +9,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			throw new Error("wrong method!!");
 		}
 
-		const query = `SELECT text, time, users.name FROM messages LEFT JOIN users ON users.id = messages.owner_id WHERE chat_id = $1 ORDER BY time DESC LIMIT 1 `;
-    
-		const values = ["1"];
-		const result = await conn.query(query, values);
+		const lastMessage = await prisma.message.findFirst({
+			where: {
+				chat_id: 1
+			},
+			orderBy:{
+				id:"desc"
+			},
+			include: {
+				author: true
+			}			
+			
+		})
+
 		res.send({
 			status: "success", data: [
 				{
@@ -20,10 +29,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 					chatId: "1",
 					chatName: "Test chat",
 					chatType: "group",
-					chatPhoto:"cat4.jpg",
-					lastMessageOwnerName: result.rows[0]?.name,
-					lastMessageText: result.rows[0]?.text,
-					lastMessageTime: result.rows[0]?.time
+					chatPhoto: "cat4.jpg",
+					lastMessageOwnerName: lastMessage?.author?.display_name || "",
+					lastMessageText: lastMessage?.text || "",
+					lastMessageTime: lastMessage?.time || ""
 				}
 			]
 		})
