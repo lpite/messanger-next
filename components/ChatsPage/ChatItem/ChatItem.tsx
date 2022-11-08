@@ -22,7 +22,7 @@ export default function ChatItem({ chatId, chatName, chatType, chatPhoto, lastMe
       <div className={styles["chat_details"]}>
         <span className={styles["chat_name"]}>{chatName}</span>
         <br />
-        <span className={styles["chat_message"]}>{chatType === "group" ? `${lastMessageOwnerName}:` : ""} {lastMessageText}</span>
+        <span className={styles["chat_message"]}>{chatType === "group" ? `${lastMessageOwnerName}:` : ""} {lastMessageText.length >= 15 ? lastMessageText.slice(0,15) + "..." : lastMessageText}</span>
       </div>
       <div className={styles["chat_time_unread"]}>
         <span className={styles["chat_time"]} suppressHydrationWarning>
