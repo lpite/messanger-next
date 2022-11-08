@@ -1,5 +1,6 @@
 import React from "react"
 import { IMessage } from "..";
+import { useChatPageStore } from "../../../store/chatPageStore";
 import { useProfilePageStore } from "../../../store/profilePageStore";
 
 import styles from "./NewMessageForm.module.scss"
@@ -11,11 +12,25 @@ export default function NewMessageForm() {
 		login,
 		photo
 	} = useProfilePageStore(store => store)
+
+	const {
+		messages,
+		setMessages
+	} = useChatPageStore(store => store)
+
 	function sendMessage(e: React.FormEvent) {
 		e.preventDefault();
 		if (messageText.length) {
 			setMessageText("");
 			input.current?.focus();
+			setMessages([...messages,{
+				owner_id:id,
+				owner_login:login,
+				owner_name:displayName,
+				owner_photo:photo,
+				text:messageText,
+				time:Number(new Date()).toString()
+			}])
 			fetch("/api/sendMessage", {
 				method: "POST",
 				body: JSON.stringify({ chatId: 1, text: messageText })

@@ -22,11 +22,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			include: {
 				author: true
 			},
+			orderBy:{
+				id:"desc"
+			},
 			take: !isNaN(messageId) ? 1 : 50
 
 		})
 
-		const formatedMessages = messages.map((message) => {
+		const formatedMessages = messages.reverse().map((message) => {
 			return {
 				text: message.text,
 				time: message.time,

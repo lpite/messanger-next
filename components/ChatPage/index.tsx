@@ -8,6 +8,7 @@ import NewMessageForm from "./NewMessageForm/NewMessageForm";
 import styles from "./ChatPage.module.scss";
 import useSWR from "swr";
 import { supabase } from "../../lib/supaBase";
+import { log } from "console";
 
 
 export interface IMessage {
@@ -21,7 +22,7 @@ export interface IMessage {
 
 export default function ChatPage() {
   const { isOpen, closeChatPage, chatName, chatId, chatType, chatPhoto, messages, setMessages } = useChatPageStore((state) => state);
-  const { login } = useProfilePageStore(state => state)
+  const { login, id } = useProfilePageStore(state => state)
 
   const handlers = useSwipeable({
     onSwipedRight: () => {
@@ -61,12 +62,17 @@ export default function ChatPage() {
   const listenMessages = supabase
     .channel('schema-db-changes')
     .on('postgres_changes', { event: "INSERT", schema: "public", }, async (payload: any) => {
-      console.log(payload);
-      const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
-      console.log(data)
-      setMessages([...messages, data[0]])
+      if (payload.new.owner_id !== id) {
+        const { data } = await fetch(`/api/getMessages?chatId=1&messageId=${payload.new?.id}`).then(res => res.json())
+
+        setMessages([...messages, data[0]])
+    
+      }
+    
     })
     .subscribe()
+
+
 
   return (
     <div
